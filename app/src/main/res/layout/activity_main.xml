@@ -5,9 +5,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView2"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/my_nav" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
     <TextView
         app:layout_constraintBottom_toBottomOf="@id/etName"
@@ -33,34 +55,210 @@
 
 
     <TextView
-        app:layout_constraintEnd_toStartOf="@id/etEmailId"
+        app:layout_constraintEnd_toStartOf="@+id/sCurrency"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/etEmailId"
-        app:layout_constraintTop_toTopOf="@id/etEmailId"
-        android:id="@+id/tvEmailLabel"
+        app:layout_constraintBottom_toBottomOf="@+id/sCurrency"
+        app:layout_constraintTop_toTopOf="@+id/sCurrency"
+        android:id="@+id/tvCurrency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Email ID"
+        android:text="Currency"
+        android:textSize="18sp" />
+
+    <Spinner
+        android:id="@+id/sCurrency"
+        android:layout_marginStart="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etName"
+        app:layout_constraintStart_toEndOf="@+id/tvType"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
+
+
+    <TextView
+        app:layout_constraintEnd_toStartOf="@+id/sType"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/sType"
+        app:layout_constraintTop_toTopOf="@+id/sType"
+        android:id="@+id/tvType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Type"
+        android:textSize="18sp" />
+
+    <Spinner
+        android:id="@+id/sType"
+        android:layout_marginStart="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sCurrency"
+        app:layout_constraintStart_toEndOf="@+id/tvType"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
+
+
+    <TextView
+        app:layout_constraintEnd_toStartOf="@id/etBalance"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/etBalance"
+        app:layout_constraintTop_toTopOf="@id/etBalance"
+        android:id="@+id/tvBalance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Balance"
         android:textSize="18sp" />
 
     <EditText
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etName"
-        app:layout_constraintStart_toEndOf="@id/tvEmailLabel"
-        android:id="@+id/etEmailId"
+        app:layout_constraintTop_toBottomOf="@+id/sType"
+        app:layout_constraintStart_toEndOf="@id/tvBalance"
+        android:id="@+id/etBalance"
         android:layout_width="0dp"
         android:layout_marginStart="8dp"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
-        android:hint="Enter Email ID" />
+        android:hint="Balance" />
+
+
 
 
     <Button
-        app:layout_constraintTop_toBottomOf="@id/etEmailId"
+        app:layout_constraintTop_toBottomOf="@id/etBalance"
         android:id="@+id/btnAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="ADD RECORD" />
+
+    <TextView
+        app:layout_constraintBottom_toBottomOf="@+id/etTransactionDate"
+        app:layout_constraintTop_toTopOf="@+id/etTransactionDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/etTransactionDate"
+        android:id="@+id/tvTransactionDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date"
+        android:textSize="18sp" />
+
+    <Button
+        android:layout_marginStart="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvNoRecordsAvailable"
+        app:layout_constraintStart_toEndOf="@+id/tvTransactionDateLabel"
+        android:id="@+id/btnTransactionDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textColor="#929292"
+        android:text="Select Date" />
+
+    <EditText
+        android:layout_marginStart="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvNoRecordsAvailable"
+        app:layout_constraintStart_toEndOf="@+id/tvTransactionDateLabel"
+        android:id="@+id/etTransactionDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter Name" />
+
+    <TextView
+        app:layout_constraintBottom_toBottomOf="@+id/etAmount"
+        app:layout_constraintTop_toTopOf="@+id/etAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/etAmount"
+        android:id="@+id/tvAmountLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Amount"
+        android:textSize="18sp" />
+
+    <EditText
+        android:layout_marginStart="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etTransactionDate"
+        app:layout_constraintStart_toEndOf="@+id/tvAmountLabel"
+        android:id="@+id/etAmount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter Name" />
+
+    <TextView
+        app:layout_constraintBottom_toBottomOf="@+id/sCategory"
+        app:layout_constraintTop_toTopOf="@+id/sCategory"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/sCategory"
+        android:id="@+id/tvCategoryLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Category"
+        android:textSize="18sp" />
+
+    <Spinner
+        android:id="@+id/sCategory"
+        android:layout_marginStart="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etAmount"
+        app:layout_constraintStart_toEndOf="@+id/tvCategoryLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        app:layout_constraintBottom_toBottomOf="@+id/sAccount"
+        app:layout_constraintTop_toTopOf="@+id/sAccount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/sAccount"
+        android:id="@+id/tvTransactionAccountLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Account"
+        android:textSize="18sp" />
+
+    <Spinner
+        android:id="@+id/sAccount"
+        android:layout_marginStart="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sCategory"
+        app:layout_constraintStart_toEndOf="@+id/tvTransactionAccountLabel"
+        android:textColor="@android:color/black"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        />
+
+    <TextView
+        app:layout_constraintBottom_toBottomOf="@+id/etDescription"
+        app:layout_constraintTop_toTopOf="@+id/etDescription"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/etDescription"
+        android:id="@+id/tvDescriptionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:textSize="18sp" />
+
+    <EditText
+        android:layout_marginStart="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sAccount"
+        app:layout_constraintStart_toEndOf="@+id/tvDescriptionLabel"
+        android:id="@+id/etDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter Name" />
+
+    <Button
+        app:layout_constraintTop_toBottomOf="@+id/etDescription"
+        android:id="@+id/btnAddTransaction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ADD RECORD" />
+
+
 
 
     <TextView
@@ -86,13 +284,15 @@
     <TextView
         android:id="@+id/tvNoRecordsAvailable"
         android:layout_width="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnAdd"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="No records available!!!"
         android:textSize="18sp"
         android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnAdd"
+        app:layout_constraintVertical_bias="0.166"
+        tools:layout_editor_absoluteX="0dp"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

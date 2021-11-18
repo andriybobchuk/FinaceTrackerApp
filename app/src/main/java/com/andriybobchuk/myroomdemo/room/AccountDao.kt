@@ -1,4 +1,4 @@
-package com.andriybobchuk.myroomdemo
+package com.andriybobchuk.myroomdemo.room
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
@@ -8,24 +8,24 @@ import kotlinx.coroutines.flow.Flow
  * Here you just declare all the CRUD (Create-Read-Update-Delete) operations
  */
 @Dao
-interface EmployeeDao {
+interface AccountDao {
 
     /*
     We are making it a suspend function using a coroutine class as this operation
     takes relatively long time. That means we want to run it on background thread
      */
     @Insert
-    suspend fun insert(employeeEntity: EmployeeEntity)
+    suspend fun insert(accountEntity: AccountEntity)
 
     @Update
-    suspend fun update(employeeEntity: EmployeeEntity)
+    suspend fun update(accountEntity: AccountEntity)
 
     @Delete
-    suspend fun delete(employeeEntity: EmployeeEntity)
+    suspend fun delete(accountEntity: AccountEntity)
 
-    @Query("SELECT * FROM `employee-table`")
-    fun fetchAllEmployees():Flow<List<EmployeeEntity>>
+    @Query("SELECT * FROM `account-table`")
+    fun fetchAllAccounts():Flow<List<AccountEntity>>
 
-    @Query("SELECT * FROM `employee-table` WHERE id=:id")
-    fun fetchEmployeeById(id: Int):Flow<EmployeeEntity>
+    @Query("SELECT * FROM `account-table` WHERE id=:id")
+    fun fetchAccountById(id: Int):Flow<AccountEntity>
 }

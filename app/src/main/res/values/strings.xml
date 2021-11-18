@@ -1,3 +1,34 @@
 <resources>
     <string name="app_name">MyRoomDemo</string>
+
+    <string-array name="transaction_categories_array">
+        <!-- Expenses Categories -->
+        <item>Groceries</item>
+        <item>Transportation</item>
+        <item>Rent</item>
+        <item>Subscriptions</item>
+        <item>Healthcare</item>
+        <item>Entertainment</item>
+        <item>Internet</item>
+        <item>Barber</item>
+
+        <!-- Income Categories -->
+        <item>Salary</item>
+        <item>Royalty</item>
+    </string-array>
+
+    <string-array name="currencies_array">
+        <item>PLN</item>
+        <item>USD</item>
+        <item>UAH</item>
+    </string-array>
+
+    <string-array name="account_types_array">
+        <item>Cash</item>
+        <item>Bank Account</item>
+        <item>Virtual Account</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

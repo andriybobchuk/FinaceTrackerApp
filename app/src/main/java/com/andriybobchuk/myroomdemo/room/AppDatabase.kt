@@ -1,4 +1,4 @@
-package com.andriybobchuk.myroomdemo
+package com.andriybobchuk.myroomdemo.room
 
 import android.content.Context
 import androidx.room.Database
@@ -12,10 +12,11 @@ import androidx.room.RoomDatabase
  *
  * + Based on a SINGLETON pattern you create a table only if it wasn't created before
  */
-@Database(entities = [EmployeeEntity::class], version = 1)
-abstract class EmployeeDatabase:RoomDatabase() {
+@Database(entities = [AccountEntity::class, TransactionEntity::class], version = 3)
+abstract class AppDatabase:RoomDatabase() {
 
-    abstract fun employeeDao():EmployeeDao
+    abstract fun accountDao(): AccountDao
+    abstract fun transactionDao(): TransactionDao
 
 
     /*
@@ -29,11 +30,11 @@ abstract class EmployeeDatabase:RoomDatabase() {
 
         // keeps an instance of existing db not to create several of them
         @Volatile
-        private var INSTANCE: EmployeeDatabase? = null
+        private var INSTANCE: AppDatabase? = null
 
         // Multiple threads can ask for the same database at a time
         // To ensure we only instantiate it once we use a synchronized block inside
-        fun getInstance(context: Context):EmployeeDatabase {
+        fun getInstance(context: Context): AppDatabase {
 
             // Only one thread may enter a synchronized block at a time
             synchronized(this) {
@@ -42,7 +43,7 @@ abstract class EmployeeDatabase:RoomDatabase() {
                 if(instance == null) {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
-                        EmployeeDatabase::class.java,
+                        AppDatabase::class.java,
                         "employee_database"
                     ).fallbackToDestructiveMigration()
                         .build()
