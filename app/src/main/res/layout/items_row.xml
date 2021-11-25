@@ -1,54 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/llMain"
+    android:id="@+id/llTransactionItemRow"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
+    android:gravity="center"
     android:orientation="horizontal"
-    android:padding="10dp">
+    android:paddingRight="30dp"
+    android:paddingVertical="10dp">
 
-    <TextView
-        android:id="@+id/tvName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:textSize="16sp"
-        tools:text="Name" />
+    <ImageView
+        android:id="@+id/ivTransactionItemRowCategory"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_weight="1.2"
+        android:src="@drawable/ic_groceries"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        tools:text=":" />
-
-    <TextView
-        android:id="@+id/tvEmail"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="3.5"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTransactionItemRowCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            tools:text="Groceries"
+            android:fontFamily="@font/segoeuib"
+            />
+
+        <TextView
+            android:id="@+id/tvTransactionItemRowDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:text="19 Oct 2021"
+            android:fontFamily="@font/segoeui"/>
+
+        <TextView
+            android:id="@+id/tvTransactionItemRowDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:text="Trip to Kaufland"
+            android:layout_marginTop="3dp"
+            android:fontFamily="@font/segoeui"/>
+
+    </LinearLayout>
+
+
+
+    <TextView
+        android:id="@+id/tvTransactionItemRowAmount"
+        android:gravity="right"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
         android:textColor="@android:color/black"
         android:textSize="16sp"
-        tools:text="Email" />
-
-    <ImageView
-        android:id="@+id/ivEdit"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:contentDescription="image"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
-        android:scaleType="center"
-        android:src="@drawable/ic_action_edit" />
-
-    <ImageView
-        android:id="@+id/ivDelete"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:contentDescription="image"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
-        android:scaleType="center"
-        android:src="@drawable/ic_action_delete" />
+        tools:text="-13.48 PLN"
+        android:fontFamily="@font/segoeuisb"/>
 </LinearLayout>

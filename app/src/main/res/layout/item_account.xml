@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:cardCornerRadius="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_add_account"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_add_account"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:padding="10dp"
+                android:background="@color/view_holder_color1"
+                android:text="Add an account"
+                android:textColor="@color/primary_text_color"
+                android:textSize="15sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+        </androidx.cardview.widget.CardView>
+
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_account_item"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:visibility="visible"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/ll_card"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/view_holder_color"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="visible"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tv_amount_on_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:textColor="@color/primary_text_color"
+                    android:textSize="15sp"
+                    tools:text="PLN 3500.00" />
+
+                <TextView
+                    android:id="@+id/tv_account_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:textColor="@color/primary_text_color"
+                    android:textSize="15sp"
+                    tools:text="Bank Account" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
+
+

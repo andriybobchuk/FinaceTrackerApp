@@ -12,6 +12,7 @@
         android:theme="@style/Theme.MyRoomDemo">
         <activity
             android:name=".activities.MainActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
