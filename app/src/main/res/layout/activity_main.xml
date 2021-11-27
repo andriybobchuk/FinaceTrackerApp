@@ -10,6 +10,7 @@
         android:id="@+id/rv_appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,16 +19,16 @@
         <ImageView
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:layout_marginLeft="48dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="20dp"
             android:src="@drawable/ic_drawer_menu_button" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="40dp"
             android:layout_marginTop="22dp"
             android:orientation="vertical">
 
@@ -70,7 +71,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/tab_bar_color"
-        app:itemIconTint="@color/white"
+        app:itemIconTint="@drawable/bottom_navigation_selector"
         app:itemTextColor="@color/white"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"

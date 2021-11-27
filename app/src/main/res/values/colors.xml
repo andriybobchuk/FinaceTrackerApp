@@ -14,6 +14,9 @@
     <color name="accent_color">#5492dc</color>
     <color name="tab_bar_color">#161616</color>
     <color name="light_grey">#F5F5F5</color>
+    <color name="dark_grey">#cfcfcf</color>
     <color name="view_holder_color1">#B2CFEA</color>
+    <color name="card_stroke_color">#707070</color>
+    <color name="card_add_text_color">#848484</color>
 
 </resources>

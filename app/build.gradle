@@ -55,6 +55,9 @@ dependencies {
     // Kotlin extensions for coroutine support with activities
     implementation "androidx.activity:activity-ktx:$activityVersion"
 
+    // Fixed aspect ratio views
+    //noinspection GradleCompatible
+    implementation 'com.android.support:percent:23.1.1'
     // end
 
     implementation 'androidx.core:core-ktx:1.7.0'
