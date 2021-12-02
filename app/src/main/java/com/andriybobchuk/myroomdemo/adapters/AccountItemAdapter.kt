@@ -17,12 +17,14 @@ import com.andriybobchuk.myroomdemo.MainFragment
 import com.andriybobchuk.myroomdemo.R
 import com.andriybobchuk.myroomdemo.databinding.ItemAccountBinding
 import com.andriybobchuk.myroomdemo.databinding.ItemsRowBinding
+import com.andriybobchuk.myroomdemo.room.AccountDao
 import com.andriybobchuk.myroomdemo.room.AccountEntity
 
 
 open class AccountItemAdapter(
     private val context: Context,
-    private var list: ArrayList<AccountEntity>
+    private var list: ArrayList<AccountEntity>,
+    private var accountDao: AccountDao
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
@@ -45,7 +47,7 @@ open class AccountItemAdapter(
 
         val ASPECT_RATIO = 0.6306 // Standard bank card height/width aspect ratio
         val dynamic_width =
-            (parent.width * 0.8).toInt() // Card width is just 70% of screen width
+            ((parent.width * 0.80) + 30).toInt() // Card width is just 80% of screen width
         val dynamic_height =
             (dynamic_width * ASPECT_RATIO).toInt() // Card height is 63% of card width
 
@@ -76,21 +78,22 @@ open class AccountItemAdapter(
 
         if (holder is MyViewHolder) {
             if (position == list.size - 1) {
-                holder.itemView.findViewById<TextView>(R.id.tv_add_account).visibility = View.VISIBLE
-                holder.itemView.findViewById<CardView>(R.id.cv_account_item).visibility = View.GONE
+                holder.itemView.findViewById<CardView>(R.id.cv_add_account).visibility = View.VISIBLE
+                holder.itemView.findViewById<LinearLayout>(R.id.ll_account_item).visibility = View.GONE
             } else {
-                holder.itemView.findViewById<TextView>(R.id.tv_add_account).visibility = View.GONE
-                holder.itemView.findViewById<CardView>(R.id.cv_account_item).visibility = View.VISIBLE
+                holder.itemView.findViewById<CardView>(R.id.cv_add_account).visibility = View.GONE
+                holder.itemView.findViewById<LinearLayout>(R.id.ll_account_item).visibility = View.VISIBLE
             }
 
             holder.itemView.findViewById<TextView>(R.id.tv_amount_on_card).text = model.balance
             holder.itemView.findViewById<TextView>(R.id.tv_account_type).text = model.type
 
-            holder.itemView.findViewById<TextView>(R.id.tv_add_account).setOnClickListener {
-                holder.itemView.findViewById<TextView>(R.id.tv_add_account).visibility = View.GONE
+            holder.itemView.findViewById<CardView>(R.id.cv_add_account).setOnClickListener {
+                holder.itemView.findViewById<CardView>(R.id.cv_add_account).visibility = View.GONE
 
                 // Inflate the dialog
-               MainFragment().AccountDesignDialog(context).show()
+                Toast.makeText(context, "$context", Toast.LENGTH_LONG).show()
+                MainFragment().AccountDesignDialog(context, accountDao).show()
 
             }
         }

@@ -21,33 +21,14 @@ import android.os.Build
 import android.view.Window
 import android.widget.*
 
-import androidx.appcompat.app.AppCompatActivity
-
-import androidx.lifecycle.lifecycleScope
-import com.andriybobchuk.myroomdemo.R
 //import com.andriybobchuk.myroomdemo.adapters.ItemAdapter
-import com.andriybobchuk.myroomdemo.databinding.ActivityMainBinding
 
 import com.andriybobchuk.myroomdemo.util.FinanceApp
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.*
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.andriybobchuk.myroomdemo.HistoryFragment
-import com.andriybobchuk.myroomdemo.MainFragment
 import com.andriybobchuk.myroomdemo.adapters.AccountItemAdapter
-import com.andriybobchuk.myroomdemo.adapters.TransactionItemAdapter
 import com.andriybobchuk.myroomdemo.databinding.DesignNewAccountDialogFragmentBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -72,9 +53,10 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!!
 
 
-    var accountDao: AccountDao? = null
-
-    inner class AccountDesignDialog(context: Context) : Dialog(context) {
+    inner class AccountDesignDialog(
+        val mainActivityContext: Context,
+        var accountDao: AccountDao
+    ) : Dialog(mainActivityContext) {
 
         init {
             setCancelable(true)
@@ -96,9 +78,11 @@ class MainFragment : Fragment() {
                 RelativeLayout.LayoutParams.WRAP_CONTENT
             )
 
-
-
+            //val accountDao: AccountDao? = null
+            //var accountDao = (mainActivityContext as FinanceApp).db.accountDao()
             binding?.btnAdd?.setOnClickListener {
+
+                Toast.makeText(context, "context: $context; mainActivityContext: $mainActivityContext", Toast.LENGTH_LONG).show()
 
 
                 val name = binding?.etName?.text.toString()
@@ -106,52 +90,22 @@ class MainFragment : Fragment() {
                 val type = binding?.sType?.selectedItem.toString()
                 val balance = binding?.etBalance?.text.toString()
 
-
-                var account: AccountEntity
-
                 if (name.isNotEmpty() && currency.isNotEmpty() && type.isNotEmpty() && balance.isNotEmpty()) {
-                    account = AccountEntity(
+                    var account = AccountEntity(
                         name = name,
                         currency = currency,
                         type = type,
                         balance = balance
                     )
-
-                    //addRecord(account)
-
-                    //Toast.makeText(context, "$name $currency $type $balance", Toast.LENGTH_LONG).show()
-                    Toast.makeText(context, "$account", Toast.LENGTH_LONG).show()
-
-
-                    addRecord(account)
-//                    lifecycleScope.launch {
-//                        if (accountDao != null) {
-//                            Toast.makeText(context, "accountDao is good", Toast.LENGTH_LONG).show()
-//
-////                            accountDao?.insert(
-////                                account
-////                            )
-////                            Toast.makeText(context, "Record saved!", Toast.LENGTH_LONG).show()
-//
-//                        } else {
-//                            Toast.makeText(context, "accountDao is null", Toast.LENGTH_LONG).show()
-//                        }
-//
-//                    }
-
+                    addRecord(accountDao, account)
 
                 } else {
-                    Toast.makeText(context, "Fill all of the fields!", Toast.LENGTH_LONG).show()
+                    //Toast.makeText(context, "Fill all of the fields!", Toast.LENGTH_LONG).show()
                 }
-
-                //            accountsArrayAdapter?.clear()
-
 
                 // Clearing the text fields
                 binding?.etName?.text?.clear()
                 binding?.etBalance?.text?.clear()
-
-
             }
 
 
@@ -180,34 +134,8 @@ class MainFragment : Fragment() {
                 // Apply the adapter to the spinner
                 accountTypesSpinner?.adapter = adapter
             }
-
         }
-
-//    fun addRecord(account: AccountEntity) {
-//        // As database data insertion should be done not on the main thread we launch
-//        //  it on the coroutine
-//
-//        GlobalScope.launch {
-//            val accountDao = (context as FinanceApp).db.accountDao()
-//            accountDao!!.insert(
-//                account
-//            )
-//            Toast.makeText(context, "Record saved!", Toast.LENGTH_LONG).show()
-//        }
-//
-//        //lifecycleScope.launch {
-//       // }
-//
-//    }
-
-
     }
-
-
-
-
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -236,17 +164,18 @@ class MainFragment : Fragment() {
 
         // TODO:bug with double click to load account list
         var accountList: ArrayList<AccountEntity>? = null
-        accountDao = (activity?.application!! as FinanceApp).db.accountDao()
+        var accountDao = (activity?.application!! as FinanceApp).db.accountDao()
         lifecycleScope.launch {
             accountDao!!.fetchAllAccounts().collect { itr ->
                 accountList = ArrayList(itr)
-                populateAccountListToUI(ArrayList(itr))
+                populateAccountListToUI(ArrayList(itr), accountDao)
                 //Toast.makeText(requireContext(), "g", Toast.LENGTH_LONG).show()
             }
         }
 
         val transactionDao = (activity?.application!! as FinanceApp).db.transactionDao()
         binding?.btnAddTransaction?.setOnClickListener {
+            Toast.makeText(context, "$context", Toast.LENGTH_LONG).show()
             addRecord(transactionDao)
         }
 
@@ -319,25 +248,13 @@ class MainFragment : Fragment() {
     }
 
 
-    fun addRecord(account: AccountEntity) {
-        // As database data insertion should be done not on the main thread we launch
-        //  it on the coroutine
-
-        accountDao = (context as FinanceApp).db.accountDao()
-//        if (accountDao != null) {
-//            Toast.makeText(activity, "accountDao is good", Toast.LENGTH_LONG).show()
-//
-////            lifecycleScope.launch {
-////                accountDao!!.insert(
-////                    account
-////                )
-////                //Toast.makeText(applicationContext, "Record saved!", Toast.LENGTH_LONG).show()
-////                Toast.makeText(activity, "Record saved!", Toast.LENGTH_LONG).show()
-////            }
-//        } else {
-//            Toast.makeText(context, "accountDao is null", Toast.LENGTH_LONG).show()
-//
-//        }
+    fun addRecord(accountDao: AccountDao,
+                  account: AccountEntity) {
+        lifecycleScope.launch {
+            accountDao.insert(
+                account
+            )
+        }
 
 
     }
@@ -494,7 +411,7 @@ class MainFragment : Fragment() {
     /**
      * A function to populate the result of BOARDS list in the UI i.e in the recyclerView.
      */
-    fun populateAccountListToUI(accountList: ArrayList<AccountEntity>) {
+    fun populateAccountListToUI(accountList: ArrayList<AccountEntity>, accountDao: AccountDao) {
 
         val addAccount = AccountEntity(name = "emptyAccount")
         accountList.add(addAccount)
@@ -505,7 +422,7 @@ class MainFragment : Fragment() {
         )
         binding.rvAccountList.setHasFixedSize(true)
 
-        val adapter = AccountItemAdapter(requireContext(), accountList)
+        val adapter = AccountItemAdapter(requireContext(), accountList, accountDao)
         binding.rvAccountList.adapter = adapter // Attach the adapter to the recyclerView.
     }
 
