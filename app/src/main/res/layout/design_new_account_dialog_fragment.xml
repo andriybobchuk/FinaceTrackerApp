@@ -28,24 +28,25 @@
             android:id="@+id/sType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/SpinnerTheme"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:theme="@style/SpinnerTheme"
             />
 
         <Spinner
             android:id="@+id/sCurrency"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/SpinnerTheme"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:theme="@style/SpinnerTheme"
             />
 
         <EditText
             android:id="@+id/etBalance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Balance"
+            android:hint="0.00 PLN"
             android:textSize="24sp"
             android:inputType="numberDecimal"
-            android:text="0.00"
             android:fontFamily="@font/segoeuib"
             android:background="@android:color/transparent"
             android:layout_marginLeft="5dp"
@@ -61,6 +62,7 @@
             android:textColor="@color/primary_text_color"
             android:hint="Account Name"
             android:layout_marginTop="8dp"
+            android:theme="@style/EditTextTheme"
             />
 
 

@@ -20,6 +20,7 @@ import android.content.Context
 import android.os.Build
 import android.view.Window
 import android.widget.*
+import androidx.cardview.widget.CardView
 
 //import com.andriybobchuk.myroomdemo.adapters.ItemAdapter
 
@@ -82,7 +83,11 @@ class MainFragment : Fragment() {
             //var accountDao = (mainActivityContext as FinanceApp).db.accountDao()
             binding?.btnAdd?.setOnClickListener {
 
-                Toast.makeText(context, "context: $context; mainActivityContext: $mainActivityContext", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    context,
+                    "context: $context; mainActivityContext: $mainActivityContext",
+                    Toast.LENGTH_LONG
+                ).show()
 
 
                 val name = binding?.etName?.text.toString()
@@ -162,6 +167,8 @@ class MainFragment : Fragment() {
 
         var accountsArrayAdapter: ArrayAdapter<String>? = null
 
+        setCurrentDate()
+
         // TODO:bug with double click to load account list
         var accountList: ArrayList<AccountEntity>? = null
         var accountDao = (activity?.application!! as FinanceApp).db.accountDao()
@@ -176,9 +183,8 @@ class MainFragment : Fragment() {
         val transactionDao = (activity?.application!! as FinanceApp).db.transactionDao()
         binding?.btnAddTransaction?.setOnClickListener {
             Toast.makeText(context, "$context", Toast.LENGTH_LONG).show()
-            addRecord(transactionDao)
+            addRecord(transactionDao, accountDao)
         }
-
 
 
         val categoriesSpinner = binding?.sCategory
@@ -223,7 +229,10 @@ class MainFragment : Fragment() {
 
 
         // OnClickListener is set to the button for launching the DatePicker Dialog.
-        binding?.btnTransactionDate?.setOnClickListener { view ->
+//        binding?.btnTransactionDate?.setOnClickListener { view ->
+//            clickDataPicker(view)
+//        }
+        binding.llDateSetter.setOnClickListener {
             clickDataPicker(view)
         }
 
@@ -248,8 +257,10 @@ class MainFragment : Fragment() {
     }
 
 
-    fun addRecord(accountDao: AccountDao,
-                  account: AccountEntity) {
+    fun addRecord(
+        accountDao: AccountDao,
+        account: AccountEntity
+    ) {
         lifecycleScope.launch {
             accountDao.insert(
                 account
@@ -259,13 +270,13 @@ class MainFragment : Fragment() {
 
     }
 
-    private fun addRecord(transactionDao: TransactionDao) {
-        val date = binding?.btnTransactionDate?.text.toString()
+    // Add Transaction
+    private fun addRecord(transactionDao: TransactionDao, accountDao: AccountDao) {
+        val date = binding?.tvTransactionDate?.text.toString()
         val amount = binding?.etAmount?.text.toString()
         val category = binding?.sCategory?.selectedItem.toString()
         val account = binding?.sAccount?.selectedItem.toString()
         val description = binding?.etDescription?.text.toString()
-
 
         if (date.isNotEmpty()
             && amount.isNotEmpty()
@@ -274,18 +285,42 @@ class MainFragment : Fragment() {
             && description.isNotEmpty()
         ) {
 
-            // As database data insertion should be done not on the main thread we launch
-            //  it on the coroutine
+//            lifecycleScope.launch {
+//                // We gotta add or remove the amount of transaction to or from the balance
+
+//            }
+
             lifecycleScope.launch {
-                transactionDao.insert(
-                    TransactionEntity(
-                        date = date,
-                        amount = amount,
-                        category = category,
-                        account = account,
-                        description = description
-                    )
-                )
+
+                var currency: String;
+                // Converting the name of account in use to the real account object to access its currency
+                accountDao.fetchAccountByName(account).collect {
+                    if (it != null) {
+                        currency = it.currency
+
+                        transactionDao.insert(
+                            TransactionEntity(
+                                date = date,
+                                amount = amount,
+                                category = category,
+                                account = account,
+                                currency = currency,
+                                description = description
+                            )
+                        )
+//                        accountDao.update(
+//                            AccountEntity(
+//                                id = it.id,
+//                                name = it.name,
+//                                type = it.type,
+//                                currency = it.currency,
+//                                balance = (it.balance.toDouble() + amount.toDouble()).toString()
+//                            )
+//                        )
+                    }
+                }
+
+
                 Toast.makeText(activity, "Record saved!", Toast.LENGTH_LONG).show()
 
                 // Clearing the text fields
@@ -363,6 +398,27 @@ class MainFragment : Fragment() {
         alertDialog.show()
     }
 
+    fun setCurrentDate() {
+        val c = Calendar.getInstance()
+
+        val year =
+            c.get(Calendar.YEAR) // Returns the value of the given calendar field. This indicates YEAR
+        val month = c.get(Calendar.MONTH) // This indicates the Month
+        val day = c.get(Calendar.DAY_OF_MONTH) // This indicates the Day
+
+        var selectedDate = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LocalDate.of(year, month + 1, day)
+        } else {
+            TODO("VERSION.SDK_INT < O")
+        }
+
+        var formatter = DateTimeFormatter.ofPattern("d MMM yyyy")
+        var formattedDate = selectedDate.format(formatter)
+
+        // Selected date it set to the TextView to make it visible to user.
+        binding?.tvTransactionDate?.text = formattedDate
+    }
+
     /**
      * The function to show the DatePicker Dialog.
      */
@@ -394,7 +450,7 @@ class MainFragment : Fragment() {
                 var formattedDate = selectedDate.format(formatter)
 
                 // Selected date it set to the TextView to make it visible to user.
-                binding?.btnTransactionDate?.text = formattedDate
+                binding?.tvTransactionDate?.text = formattedDate
 
 
             },

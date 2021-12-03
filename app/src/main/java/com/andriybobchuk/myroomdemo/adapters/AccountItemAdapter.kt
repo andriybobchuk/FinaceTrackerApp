@@ -85,7 +85,7 @@ open class AccountItemAdapter(
                 holder.itemView.findViewById<LinearLayout>(R.id.ll_account_item).visibility = View.VISIBLE
             }
 
-            holder.itemView.findViewById<TextView>(R.id.tv_amount_on_card).text = model.balance
+            holder.itemView.findViewById<TextView>(R.id.tv_amount_on_card).text = "${model.currency} ${model.balance}"
             holder.itemView.findViewById<TextView>(R.id.tv_account_type).text = model.type
 
             holder.itemView.findViewById<CardView>(R.id.cv_add_account).setOnClickListener {

@@ -42,7 +42,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:spinnerMode="dialog"
-            style="@style/SpinnerTheme"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:theme="@style/SpinnerTheme"
             />
 
         <Spinner
@@ -50,7 +51,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:spinnerMode="dialog"
-            style="@style/SpinnerTheme"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:theme="@style/SpinnerTheme"
             />
 
         <EditText
@@ -59,8 +61,7 @@
             android:layout_height="wrap_content"
             android:textSize="24sp"
             android:inputType="numberDecimal"
-            android:text="0.00"
-            android:hint="Amount"
+            android:hint="0.00"
             android:fontFamily="@font/segoeuib"
             android:background="@android:color/transparent"
             android:layout_marginLeft="5dp"
@@ -71,36 +72,65 @@
             android:id="@+id/etDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Description (Optional)"
+            android:hint="Description"
             android:inputType="textAutoComplete"
             android:textColor="@color/primary_text_color"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="20dp"
+            android:theme="@style/EditTextTheme"
             />
 
-        <Button
-            android:id="@+id/btnTransactionDate"
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:text="Select Date"
-            android:textAllCaps="false"
-            android:textColor="#929292"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            />
+            android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/btnAddTransaction"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="25dp"
-            android:paddingVertical="10dp"
-            android:layout_gravity="right"
-            android:background="@drawable/button_light"
-            android:fontFamily="@font/segoeuib"
-            android:text="Add Transaction"
-            android:textAllCaps="false"
-            />
+            <LinearLayout
+                android:id="@+id/ll_dateSetter"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_calendar"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"/>
+
+                <TextView
+                    android:id="@+id/tv_transactionDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/segoeuisb"
+                    android:text="Date"
+                    android:layout_marginRight="10dp"
+                    android:textSize="15sp"
+                    android:textColor="@color/primary_text_color"/>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnAddTransaction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_light"
+                android:fontFamily="@font/segoeuib"
+                android:paddingHorizontal="25dp"
+                android:paddingVertical="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Add Transaction"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 

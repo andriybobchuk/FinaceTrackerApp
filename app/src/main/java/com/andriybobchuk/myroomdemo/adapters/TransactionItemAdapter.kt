@@ -32,7 +32,7 @@ class TransactionItemAdapter(private val items: ArrayList<TransactionEntity>
         holder.tvTransactionItemRowCategory.text = item.category
         holder.tvTransactionItemRowDate.text = item.date
         holder.tvTransactionItemRowDescription.text = item.description
-        holder.tvTransactionItemRowAmount.text = item.amount
+        holder.tvTransactionItemRowAmount.text = "${item.amount} ${item.currency}"
 
     }
 

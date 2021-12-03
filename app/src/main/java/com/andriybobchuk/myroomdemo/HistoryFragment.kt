@@ -52,7 +52,6 @@ class HistoryFragment : Fragment() {
         val view = binding.root
 
 
-
         //val transactionArray = arrayListOf<String>()
 
         var transactionsList: ArrayList<TransactionEntity>? = null

@@ -34,11 +34,18 @@
         <item name="android:colorAccent">@color/tab_bar_color</item>
     </style>
 
-    <style name="SpinnerTheme" parent="Widget.AppCompat.Spinner.Underlined">
+    <style name="SpinnerTheme">
         <item name="android:textColor">@color/primary_text_color</item>
         <item name="android:fontFamily">@font/segoeui</item>
-        <item name="android:textStyle">normal</item>
         <item name="android:textSize">17sp</item>
+
+        <item name="colorAccent">@color/accent_color</item>
+        <item name="colorControlNormal">@color/spinner_color</item>
+    </style>
+
+    <style name="EditTextTheme" parent="Widget.AppCompat.EditText">
+        <item name="colorControlActivated">@color/accent_color</item>
+        <item name="colorControlNormal">@color/spinner_color</item>
     </style>
 
 </resources>

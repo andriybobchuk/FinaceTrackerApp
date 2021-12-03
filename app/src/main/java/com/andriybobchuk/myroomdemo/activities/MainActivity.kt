@@ -1,8 +1,10 @@
 package com.andriybobchuk.myroomdemo.activities
 
 
+import android.app.PendingIntent.getActivity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import com.andriybobchuk.myroomdemo.databinding.ActivityMainBinding
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -10,9 +12,18 @@ import com.andriybobchuk.myroomdemo.MainFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.fragment.app.FragmentTransaction
 import com.andriybobchuk.myroomdemo.R
+import com.andriybobhcuk.manageux.activities.BaseActivity
 
 
-class MainActivity : AppCompatActivity() {
+
+
+
+
+
+
+
+
+class MainActivity : BaseActivity() {
 
     // View Binding
     private var binding: ActivityMainBinding? = null
@@ -27,11 +38,26 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.setupWithNavController(navController)
 
-//        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-//        ft.replace(R.id.nav_host_fragment, MainFragment())
-//        ft.commit()
+
+        setupActionBar()
+    }
+
+    fun setupActionBar() {
 
 
+        val currentFragment = supportFragmentManager.fragments.last()
+
+        if (currentFragment is MainFragment) {
+            binding?.tvActionBarTitle?.text = "Main"
+        } else {
+            binding?.tvActionBarTitle?.text = "History"
+        }
+
+
+        // todo
+//        toolbar_main_activity.setNavigationOnClickListener {
+//            toggleDrawer()
+//        }
     }
 
 

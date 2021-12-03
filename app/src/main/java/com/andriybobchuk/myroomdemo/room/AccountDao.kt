@@ -28,4 +28,7 @@ interface AccountDao {
 
     @Query("SELECT * FROM `account-table` WHERE id=:id")
     fun fetchAccountById(id: Int):Flow<AccountEntity>
+
+    @Query("SELECT * FROM `account-table` WHERE name=:name")
+    fun fetchAccountByName(name: String):Flow<AccountEntity>
 }

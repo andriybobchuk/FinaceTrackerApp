@@ -18,5 +18,7 @@
     <color name="view_holder_color1">#B2CFEA</color>
     <color name="card_stroke_color">#707070</color>
     <color name="card_add_text_color">#848484</color>
+    <color name="spinner_color">#ededed</color>
+    <color name="snackbar_error_color">#D93025</color>
 
 </resources>
