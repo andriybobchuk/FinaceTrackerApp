@@ -12,7 +12,7 @@ import androidx.room.RoomDatabase
  *
  * + Based on a SINGLETON pattern you create a table only if it wasn't created before
  */
-@Database(entities = [AccountEntity::class, TransactionEntity::class], version = 4)
+@Database(entities = [AccountEntity::class, TransactionEntity::class], version = 10)
 abstract class AppDatabase:RoomDatabase() {
 
     abstract fun accountDao(): AccountDao

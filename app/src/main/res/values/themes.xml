@@ -46,6 +46,10 @@
     <style name="EditTextTheme" parent="Widget.AppCompat.EditText">
         <item name="colorControlActivated">@color/accent_color</item>
         <item name="colorControlNormal">@color/spinner_color</item>
+        <item name="android:textColor">@color/primary_text_color</item>
+        <item name="android:fontFamily">@font/segoeui</item>
+        <item name="android:textSize">15sp</item>
+        <item name="paddingBottomNoButtons">4dp</item>
     </style>
 
 </resources>

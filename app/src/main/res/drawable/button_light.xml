@@ -8,7 +8,7 @@
             <solid android:color="@android:color/white" />
             <corners android:radius="50dp" />
             <stroke
-                android:width="2px"
+                android:width="2.3px"
                 android:color="@color/tab_bar_color"/>
         </shape>
     </item>
@@ -20,7 +20,7 @@
             <solid android:color="@color/light_grey" />
             <corners android:radius="50dp" />
             <stroke
-                android:width="2px"
+                android:width="2.3px"
                 android:color="@color/tab_bar_color"/>
         </shape>
     </item>

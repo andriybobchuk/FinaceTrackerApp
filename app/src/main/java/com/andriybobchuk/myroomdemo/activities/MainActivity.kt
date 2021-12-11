@@ -12,6 +12,7 @@ import com.andriybobchuk.myroomdemo.MainFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.fragment.app.FragmentTransaction
 import com.andriybobchuk.myroomdemo.R
+import com.andriybobchuk.myroomdemo.databinding.ContentMainBinding
 import com.andriybobhcuk.manageux.activities.BaseActivity
 
 
@@ -26,13 +27,14 @@ import com.andriybobhcuk.manageux.activities.BaseActivity
 class MainActivity : BaseActivity() {
 
     // View Binding
-    private var binding: ActivityMainBinding? = null
+    private var binding: ContentMainBinding? = null
+    private var mainBinding: ActivityMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Binding way of inflating the root
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
+        mainBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(mainBinding?.root)
 
         val navController = findNavController(R.id.nav_host_fragment)
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)

@@ -21,4 +21,6 @@
     <color name="spinner_color">#ededed</color>
     <color name="snackbar_error_color">#D93025</color>
 
+    <color name="income_color">#316552</color>
+
 </resources>

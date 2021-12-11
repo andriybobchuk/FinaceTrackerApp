@@ -15,7 +15,9 @@ import com.andriybobchuk.myroomdemo.room.TransactionEntity
 import com.andriybobchuk.myroomdemo.util.FinanceApp
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.util.ArrayList
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,8 +61,10 @@ class HistoryFragment : Fragment() {
 
         lifecycleScope.launch {
             transactionDao.fetchAllTransactions().collect { itr ->
-                transactionsList = ArrayList(itr)
-                populateTransactionListToUI(ArrayList(itr))
+
+                var sortedList = ArrayList(itr).sortedWith(compareByDescending { SimpleDateFormat("d MMM yyyy").parse(it.date) })
+
+                populateTransactionListToUI(ArrayList(sortedList))
             }
         }
 

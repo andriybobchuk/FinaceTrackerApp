@@ -1,9 +1,12 @@
 package com.andriybobchuk.myroomdemo.adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 import com.andriybobchuk.myroomdemo.HistoryFragment
+import com.andriybobchuk.myroomdemo.R
 import com.andriybobchuk.myroomdemo.databinding.ItemsRowBinding
 import com.andriybobchuk.myroomdemo.room.TransactionEntity
 
@@ -28,11 +31,66 @@ class TransactionItemAdapter(private val items: ArrayList<TransactionEntity>
         val item = items[position]
 
         // Let's bind individual items of each view
-        //holder.ivTransactionItemRowCategory
         holder.tvTransactionItemRowCategory.text = item.category
         holder.tvTransactionItemRowDate.text = item.date
         holder.tvTransactionItemRowDescription.text = item.description
-        holder.tvTransactionItemRowAmount.text = "${item.amount} ${item.currency}"
+
+        when (item.category) {
+            "Groceries" -> {
+                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_groceries)
+                holder.tvTransactionItemRowAmount.text = "-${item.amount} ${item.currency}"
+            }
+            "Transportation" -> {
+                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_transportation)
+                holder.tvTransactionItemRowAmount.text = "-${item.amount} ${item.currency}"
+            }
+            "Rent" -> {
+                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_rent)
+                holder.tvTransactionItemRowAmount.text = "-${item.amount} ${item.currency}"
+            }
+            "Subscriptions" -> {
+                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_subscriptions)
+                holder.tvTransactionItemRowAmount.text = "-${item.amount} ${item.currency}"
+            }
+            "Healthcare" -> {
+                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_healthcare)
+                holder.tvTransactionItemRowAmount.text = "-${item.amount} ${item.currency}"
+            }
+            "Entertainment" -> {
+                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_entertainment)
+                holder.tvTransactionItemRowAmount.text = "-${item.amount} ${item.currency}"
+            }
+            "Internet" -> {
+                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_internet)
+                holder.tvTransactionItemRowAmount.text = "-${item.amount} ${item.currency}"
+            }
+            "Barber" -> {
+                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_other_expense)
+                holder.tvTransactionItemRowAmount.text = "-${item.amount} ${item.currency}"
+            }
+            "Other Expenses" -> {
+                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_other_expense)
+                holder.tvTransactionItemRowAmount.text = "-${item.amount} ${item.currency}"
+            }
+
+            // INCOMES:
+            "Salary" -> {
+                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_salary)
+                holder.tvTransactionItemRowAmount.text = "+${item.amount} ${item.currency}"
+                holder.tvTransactionItemRowAmount.setTextColor(getColor(context, R.color.income_color))
+            }
+            "Royalty" -> {
+                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_royalties)
+                holder.tvTransactionItemRowAmount.text = "+${item.amount} ${item.currency}"
+                holder.tvTransactionItemRowAmount.setTextColor(getColor(context, R.color.income_color))
+            }
+            "Other Incomes" -> {
+                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_other_income)
+                holder.tvTransactionItemRowAmount.text = "+${item.amount} ${item.currency}"
+                holder.tvTransactionItemRowAmount.setTextColor(getColor(context, R.color.income_color))
+            }
+
+        }
 
     }
 

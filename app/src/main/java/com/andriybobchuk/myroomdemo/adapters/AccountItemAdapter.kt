@@ -1,6 +1,5 @@
 package com.andriybobchuk.myroomdemo.adapters
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.view.LayoutInflater
@@ -8,17 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.andriybobchuk.myroomdemo.MainFragment
 
 import com.andriybobchuk.myroomdemo.R
-import com.andriybobchuk.myroomdemo.databinding.ItemAccountBinding
-import com.andriybobchuk.myroomdemo.databinding.ItemsRowBinding
 import com.andriybobchuk.myroomdemo.room.AccountDao
 import com.andriybobchuk.myroomdemo.room.AccountEntity
+import android.app.Activity
+import android.graphics.Color
+
+import android.util.DisplayMetrics
+import android.widget.Toast
 
 
 open class AccountItemAdapter(
@@ -45,16 +45,15 @@ open class AccountItemAdapter(
         val view = LayoutInflater.from(context).inflate(R.layout.item_account, parent, false)
         // Here the layout params are converted dynamically according to the screen size as width is 70% and height is wrap_content.
 
-        val ASPECT_RATIO = 0.6306 // Standard bank card height/width aspect ratio
-        val dynamic_width =
-            ((parent.width * 0.80) + 30).toInt() // Card width is just 80% of screen width
-        val dynamic_height =
-            (dynamic_width * ASPECT_RATIO).toInt() // Card height is 63% of card width
+//        val ASPECT_RATIO = 0.6306 // Standard bank card height/width aspect ratio
+//        val dynamic_width =
+//            (parent.width * 0.75).toInt() // Card width is just 75% of screen width
+//        val dynamic_height =
+//            (dynamic_width * ASPECT_RATIO).toInt() // Card height is 63% of card width
 
         val layoutParams = LinearLayout.LayoutParams(
-            dynamic_width,
-            dynamic_height,
-            // LinearLayout.LayoutParams.WRAP_CONTENT
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
         )
         // Here the dynamic margins are applied to the view.
         layoutParams.setMargins((45.toDp()).toPx(), 0, (45.toDp()).toPx(), 0)
@@ -76,6 +75,26 @@ open class AccountItemAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val model = list[position]
 
+        val displayMetrics = DisplayMetrics()
+        (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val deviceWidth = (displayMetrics.widthPixels * 0.78).toInt()
+        val deviceHeight = (deviceWidth * 0.6306).toInt()
+
+        holder.itemView.findViewById<CardView>(R.id.cv_add_account).getLayoutParams().width = deviceWidth
+        holder.itemView.findViewById<CardView>(R.id.cv_add_account).getLayoutParams().height = deviceHeight
+
+        holder.itemView.findViewById<CardView>(R.id.cv_account_item).getLayoutParams().width = deviceWidth
+        holder.itemView.findViewById<CardView>(R.id.cv_account_item).getLayoutParams().height = deviceHeight
+
+
+        var color = model.color
+        //Toast.makeText(context, color, Toast.LENGTH_LONG).show()
+
+       /////// holder.itemView.findViewById<CardView>(R.id.cv_account_item).setBackgroundColor(Color.parseColor(color))
+//
+        // holder.itemView.findViewById<CardView>(R.id.cv_add_account).setBackgroundColor(Color.parseColor(color))
+
+
         if (holder is MyViewHolder) {
             if (position == list.size - 1) {
                 holder.itemView.findViewById<CardView>(R.id.cv_add_account).visibility = View.VISIBLE
@@ -87,14 +106,11 @@ open class AccountItemAdapter(
 
             holder.itemView.findViewById<TextView>(R.id.tv_amount_on_card).text = "${model.currency} ${model.balance}"
             holder.itemView.findViewById<TextView>(R.id.tv_account_type).text = model.type
+            holder.itemView.findViewById<TextView>(R.id.tv_account_name).text = "${model.name}*"
 
             holder.itemView.findViewById<CardView>(R.id.cv_add_account).setOnClickListener {
-                holder.itemView.findViewById<CardView>(R.id.cv_add_account).visibility = View.GONE
-
                 // Inflate the dialog
-                Toast.makeText(context, "$context", Toast.LENGTH_LONG).show()
                 MainFragment().AccountDesignDialog(context, accountDao).show()
-
             }
         }
     }

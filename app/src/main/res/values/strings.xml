@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyRoomDemo</string>
+    <string name="app_name">In\'n\'Outs</string>
 
     <string-array name="transaction_categories_array">
         <!-- Expenses Categories -->
@@ -11,10 +11,12 @@
         <item>Entertainment</item>
         <item>Internet</item>
         <item>Barber</item>
+        <item>Other Expenses</item>
 
         <!-- Income Categories -->
         <item>Salary</item>
         <item>Royalty</item>
+        <item>Other Incomes</item>
     </string-array>
 
     <string-array name="currencies_array">

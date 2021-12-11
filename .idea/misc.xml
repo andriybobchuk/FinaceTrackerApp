@@ -6,15 +6,22 @@
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/drawable/bottom_navigation_selector.xml" value="0.290625" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/drawable/button_dark.xml" value="0.290625" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/drawable/button_light.xml" value="0.290625" />
+        <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/drawable/drawer_background.xml" value="0.28615384615384615" />
+        <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/drawable/ic_vector_done_24dp.xml" value="0.290625" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/drawable/spinner_item.xml" value="0.19166666666666668" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/activity_main.xml" value="0.264" />
-        <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/design_new_account_dialog_fragment.xml" value="0.4" />
+        <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/content_main.xml" value="0.27447916666666666" />
+        <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/design_new_account_dialog_fragment.xml" value="0.264" />
+        <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/dialog_list.xml" value="0.27447916666666666" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/dialog_update.xml" value="0.27447916666666666" />
+        <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/drawer_header.xml" value="0.264" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/fragment_history.xml" value="0.176" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/fragment_main.xml" value="0.264" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/item_account.xml" value="0.264" />
+        <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/item_color.xml" value="0.27447916666666666" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/items_row.xml" value="0.264" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/spinner_item.xml" value="0.27447916666666666" />
+        <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/menu/activity_main_drawer.xml" value="0.27447916666666666" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/menu/bottom_menu.xml" value="0.27447916666666666" />
         <entry key="..\:/Documents/Android/Sources/MyRoomDemo/app/src/main/res/drawable/ic_action_delete.xml" value="0.290625" />
         <entry key="..\:/Documents/Android/Sources/MyRoomDemo/app/src/main/res/drawable/ic_action_edit.xml" value="0.290625" />

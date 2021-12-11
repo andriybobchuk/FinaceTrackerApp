@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
+import android.graphics.Color
 import android.os.Build
 import android.view.Window
 import android.widget.*
@@ -30,6 +31,7 @@ import java.util.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.andriybobchuk.myroomdemo.adapters.AccountItemAdapter
 import com.andriybobchuk.myroomdemo.databinding.DesignNewAccountDialogFragmentBinding
+import com.andriybobchuk.myroomdemo.dialogs.ColorListDialog
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -59,6 +61,9 @@ class MainFragment : Fragment() {
         var accountDao: AccountDao
     ) : Dialog(mainActivityContext) {
 
+        // A global variable for selected label color
+        private var mSelectedColor: String = ""
+
         init {
             setCancelable(true)
         }
@@ -79,33 +84,40 @@ class MainFragment : Fragment() {
                 RelativeLayout.LayoutParams.WRAP_CONTENT
             )
 
+//            mSelectedColor =
+//            if (mSelectedColor.isNotEmpty()) {
+//                setColor()
+//            }
+
+            findViewById<TextView>(R.id.tv_select_color).setOnClickListener {
+                labelColorsListDialog()
+            }
+
             //val accountDao: AccountDao? = null
             //var accountDao = (mainActivityContext as FinanceApp).db.accountDao()
             binding?.btnAdd?.setOnClickListener {
 
-                Toast.makeText(
-                    context,
-                    "context: $context; mainActivityContext: $mainActivityContext",
-                    Toast.LENGTH_LONG
-                ).show()
 
 
                 val name = binding?.etName?.text.toString()
                 val currency = binding?.sCurrency?.selectedItem.toString()
                 val type = binding?.sType?.selectedItem.toString()
                 val balance = binding?.etBalance?.text.toString()
+                val color = binding?.tvSelectColor?.text.toString()
 
-                if (name.isNotEmpty() && currency.isNotEmpty() && type.isNotEmpty() && balance.isNotEmpty()) {
+                if (name.isNotEmpty() && currency.isNotEmpty() && type.isNotEmpty() && balance.isNotEmpty() && color.isNotEmpty()) {
                     var account = AccountEntity(
                         name = name,
                         currency = currency,
                         type = type,
-                        balance = balance
+                        balance = balance,
+                        color = color
                     )
                     addRecord(accountDao, account)
+                    dismiss()
 
                 } else {
-                    //Toast.makeText(context, "Fill all of the fields!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Fill all of the fields!", Toast.LENGTH_LONG).show()
                 }
 
                 // Clearing the text fields
@@ -139,6 +151,50 @@ class MainFragment : Fragment() {
                 // Apply the adapter to the spinner
                 accountTypesSpinner?.adapter = adapter
             }
+        }
+
+        /**
+         * A function to remove the text and set the label color to the TextView.
+         */
+        private fun setColor() {
+            findViewById<TextView>(R.id.tv_select_color).text = mSelectedColor
+            findViewById<TextView>(R.id.tv_select_color).visibility = View.GONE
+            findViewById<TextView>(R.id.tv_select_color).setBackgroundColor(Color.parseColor(mSelectedColor))
+        }
+
+        /**
+         * A function to add some static label colors in the list.
+         */
+        private fun colorsList(): ArrayList<String> {
+
+            val colorsList: ArrayList<String> = ArrayList()
+            colorsList.add("#43C86F")
+            colorsList.add("#0C90F1")
+            colorsList.add("#F72400")
+            colorsList.add("#7A8089")
+
+            return colorsList
+        }
+
+        /**
+         * A function to launch the label color list dialog.
+         */
+        private fun labelColorsListDialog() {
+
+            val colorsList: ArrayList<String> = colorsList()
+
+            val listDialog = object: ColorListDialog(
+                context,
+                colorsList,
+                "str_select_label_color",
+                mSelectedColor
+            ) {
+                override fun onItemSelected(color: String) {
+                    mSelectedColor = color
+                    setColor()
+                }
+            }
+            listDialog.show()
         }
     }
 
@@ -176,13 +232,11 @@ class MainFragment : Fragment() {
             accountDao!!.fetchAllAccounts().collect { itr ->
                 accountList = ArrayList(itr)
                 populateAccountListToUI(ArrayList(itr), accountDao)
-                //Toast.makeText(requireContext(), "g", Toast.LENGTH_LONG).show()
             }
         }
 
         val transactionDao = (activity?.application!! as FinanceApp).db.transactionDao()
         binding?.btnAddTransaction?.setOnClickListener {
-            Toast.makeText(context, "$context", Toast.LENGTH_LONG).show()
             addRecord(transactionDao, accountDao)
         }
 
@@ -192,7 +246,7 @@ class MainFragment : Fragment() {
         ArrayAdapter.createFromResource(
             activity?.applicationContext!!,
             R.array.transaction_categories_array,
-            android.R.layout.simple_spinner_item
+            R.layout.spinner_item
         ).also { adapter ->
             // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -200,6 +254,7 @@ class MainFragment : Fragment() {
             categoriesSpinner?.adapter = adapter
         }
 
+        //todo: bug with accountsArrayAdapter?.notifyDataSetChanged()
         val accountsArray = arrayListOf<String>()
         lifecycleScope.launch {
             accountDao!!.fetchAllAccounts().collect { itr ->
@@ -282,7 +337,6 @@ class MainFragment : Fragment() {
             && amount.isNotEmpty()
             && category.isNotEmpty()
             && account.isNotEmpty()
-            && description.isNotEmpty()
         ) {
 
 //            lifecycleScope.launch {
@@ -292,11 +346,16 @@ class MainFragment : Fragment() {
 
             lifecycleScope.launch {
 
-                var currency: String;
-                // Converting the name of account in use to the real account object to access its currency
+                var currency = ""
+                var id = -1
+                var balance  = ""
+
+
                 accountDao.fetchAccountByName(account).collect {
                     if (it != null) {
                         currency = it.currency
+                        balance = it.balance
+                        id = it.id
 
                         transactionDao.insert(
                             TransactionEntity(
@@ -308,30 +367,23 @@ class MainFragment : Fragment() {
                                 description = description
                             )
                         )
-//                        accountDao.update(
-//                            AccountEntity(
-//                                id = it.id,
-//                                name = it.name,
-//                                type = it.type,
-//                                currency = it.currency,
-//                                balance = (it.balance.toDouble() + amount.toDouble()).toString()
-//                            )
-//                        )
                     }
                 }
 
-
-                Toast.makeText(activity, "Record saved!", Toast.LENGTH_LONG).show()
-
-                // Clearing the text fields
-                //binding?.etTransactionDate?.text?.clear()
-                binding?.etAmount?.text?.clear()
-                binding?.etDescription?.text?.clear()
+                accountDao.update(
+                    AccountEntity(
+                        id = id,
+                        name = account,
+                        balance = (balance.toDouble() + amount.toDouble()).toString()
+                    )
+                )
             }
-
+            // Clearing the text fields
+            binding?.etAmount?.text?.clear()
+            binding?.etDescription?.text?.clear()
 
         } else {
-            Toast.makeText(activity, "Fill all of the fields!", Toast.LENGTH_LONG).show()
+            Toast.makeText(activity, "Fill the obligatory fields!", Toast.LENGTH_LONG).show()
 
         }
     }
@@ -481,6 +533,8 @@ class MainFragment : Fragment() {
         val adapter = AccountItemAdapter(requireContext(), accountList, accountDao)
         binding.rvAccountList.adapter = adapter // Attach the adapter to the recyclerView.
     }
+
+
 
 
 }
