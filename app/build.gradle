@@ -60,6 +60,9 @@ dependencies {
     implementation 'com.android.support:percent:23.1.1'
     // end
 
+    // Cool navigation drawer
+    implementation 'com.yarolegovich:sliding-root-nav:1.1.1'
+
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'

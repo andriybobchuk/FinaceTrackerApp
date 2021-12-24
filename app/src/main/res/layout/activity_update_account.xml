@@ -2,11 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginHorizontal="45dp"
         android:layout_marginTop="60dp"
@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Design an account"
+            android:text="Update an account"
             android:fontFamily="@font/segoeuib"
             android:textSize="25sp"
             android:textColor="@color/headline_text_color"
@@ -66,6 +66,7 @@
             />
 
         <LinearLayout
+            android:id="@+id/ll_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -73,6 +74,7 @@
             android:layout_marginLeft="5dp">
 
             <View
+                android:id="@+id/v_color"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:background="@drawable/circular_view"
@@ -108,8 +110,22 @@
             android:text="Finish"
             android:textColor="@color/white"
             android:textAllCaps="false"
-            android:layout_marginBottom="45dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginTop="40dp"/>
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="25dp"
+            android:paddingVertical="10dp"
+            android:background="@drawable/button_light"
+            android:fontFamily="@font/segoeuib"
+            android:text="Delete Account"
+            android:textColor="@color/primary_text_color"
+            android:textAllCaps="false"
+            android:layout_marginBottom="45dp"
+            android:layout_marginTop="10dp"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

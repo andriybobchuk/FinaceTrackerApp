@@ -1,4 +1,4 @@
-package com.andriybobchuk.myroomdemo
+package com.andriybobchuk.myroomdemo.fragments
 
 import android.app.Dialog
 import android.os.Bundle
@@ -29,6 +29,7 @@ import com.andriybobchuk.myroomdemo.util.FinanceApp
 import kotlinx.coroutines.flow.collect
 import java.util.*
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.andriybobchuk.myroomdemo.R
 import com.andriybobchuk.myroomdemo.adapters.AccountItemAdapter
 import com.andriybobchuk.myroomdemo.databinding.DesignNewAccountDialogFragmentBinding
 import com.andriybobchuk.myroomdemo.dialogs.ColorListDialog
@@ -55,147 +56,8 @@ class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
-
-    inner class AccountDesignDialog(
-        val mainActivityContext: Context,
-        var accountDao: AccountDao
-    ) : Dialog(mainActivityContext) {
-
-        // A global variable for selected label color
-        private var mSelectedColor: String = ""
-
-        init {
-            setCancelable(true)
-        }
-
-        var binding: DesignNewAccountDialogFragmentBinding? = null
-
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            requestWindowFeature(Window.FEATURE_NO_TITLE)
-            //setContentView(R.layout.design_new_account_dialog_fragment)
-            binding = DesignNewAccountDialogFragmentBinding.inflate(
-                LayoutInflater.from(context)
-            )
-            setContentView(binding!!.root)
-
-            window?.setLayout(
-                RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT
-            )
-
-//            mSelectedColor =
-//            if (mSelectedColor.isNotEmpty()) {
-//                setColor()
-//            }
-
-            findViewById<TextView>(R.id.tv_select_color).setOnClickListener {
-                labelColorsListDialog()
-            }
-
-            //val accountDao: AccountDao? = null
-            //var accountDao = (mainActivityContext as FinanceApp).db.accountDao()
-            binding?.btnAdd?.setOnClickListener {
-
-
-
-                val name = binding?.etName?.text.toString()
-                val currency = binding?.sCurrency?.selectedItem.toString()
-                val type = binding?.sType?.selectedItem.toString()
-                val balance = binding?.etBalance?.text.toString()
-                val color = binding?.tvSelectColor?.text.toString()
-
-                if (name.isNotEmpty() && currency.isNotEmpty() && type.isNotEmpty() && balance.isNotEmpty() && color.isNotEmpty()) {
-                    var account = AccountEntity(
-                        name = name,
-                        currency = currency,
-                        type = type,
-                        balance = balance,
-                        color = color
-                    )
-                    addRecord(accountDao, account)
-                    dismiss()
-
-                } else {
-                    Toast.makeText(context, "Fill all of the fields!", Toast.LENGTH_LONG).show()
-                }
-
-                // Clearing the text fields
-                binding?.etName?.text?.clear()
-                binding?.etBalance?.text?.clear()
-            }
-
-
-            val currenciesSpinner = binding?.sCurrency
-            // Create an ArrayAdapter using the string array and a default spinner layout
-            ArrayAdapter.createFromResource(
-                context,
-                R.array.currencies_array,
-                android.R.layout.simple_spinner_item
-            ).also { adapter ->
-                // Specify the layout to use when the list of choices appears
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                // Apply the adapter to the spinner
-                currenciesSpinner?.adapter = adapter
-            }
-
-            val accountTypesSpinner = binding?.sType
-            // Create an ArrayAdapter using the string array and a default spinner layout
-            ArrayAdapter.createFromResource(
-                context,
-                R.array.account_types_array,
-                android.R.layout.simple_spinner_item
-            ).also { adapter ->
-                // Specify the layout to use when the list of choices appears
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                // Apply the adapter to the spinner
-                accountTypesSpinner?.adapter = adapter
-            }
-        }
-
-        /**
-         * A function to remove the text and set the label color to the TextView.
-         */
-        private fun setColor() {
-            findViewById<TextView>(R.id.tv_select_color).text = mSelectedColor
-            findViewById<TextView>(R.id.tv_select_color).visibility = View.GONE
-            findViewById<TextView>(R.id.tv_select_color).setBackgroundColor(Color.parseColor(mSelectedColor))
-        }
-
-        /**
-         * A function to add some static label colors in the list.
-         */
-        private fun colorsList(): ArrayList<String> {
-
-            val colorsList: ArrayList<String> = ArrayList()
-            colorsList.add("#43C86F")
-            colorsList.add("#0C90F1")
-            colorsList.add("#F72400")
-            colorsList.add("#7A8089")
-
-            return colorsList
-        }
-
-        /**
-         * A function to launch the label color list dialog.
-         */
-        private fun labelColorsListDialog() {
-
-            val colorsList: ArrayList<String> = colorsList()
-
-            val listDialog = object: ColorListDialog(
-                context,
-                colorsList,
-                "str_select_label_color",
-                mSelectedColor
-            ) {
-                override fun onItemSelected(color: String) {
-                    mSelectedColor = color
-                    setColor()
-                }
-            }
-            listDialog.show()
-        }
+    companion object {
+        lateinit var mAccountDao: AccountDao
     }
 
 
@@ -228,6 +90,7 @@ class MainFragment : Fragment() {
         // TODO:bug with double click to load account list
         var accountList: ArrayList<AccountEntity>? = null
         var accountDao = (activity?.application!! as FinanceApp).db.accountDao()
+        mAccountDao = accountDao
         lifecycleScope.launch {
             accountDao!!.fetchAllAccounts().collect { itr ->
                 accountList = ArrayList(itr)
@@ -312,18 +175,18 @@ class MainFragment : Fragment() {
     }
 
 
-    fun addRecord(
-        accountDao: AccountDao,
-        account: AccountEntity
-    ) {
-        lifecycleScope.launch {
-            accountDao.insert(
-                account
-            )
-        }
-
-
-    }
+//    fun addRecord(
+//        accountDao: AccountDao,
+//        account: AccountEntity
+//    ) {
+//        lifecycleScope.launch {
+//            accountDao.insert(
+//                account
+//            )
+//        }
+//
+//
+//    }
 
     // Add Transaction
     private fun addRecord(transactionDao: TransactionDao, accountDao: AccountDao) {

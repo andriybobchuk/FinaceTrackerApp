@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
-import com.andriybobchuk.myroomdemo.HistoryFragment
 import com.andriybobchuk.myroomdemo.R
 import com.andriybobchuk.myroomdemo.databinding.ItemsRowBinding
 import com.andriybobchuk.myroomdemo.room.TransactionEntity

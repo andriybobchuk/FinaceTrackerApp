@@ -1,4 +1,4 @@
-package com.andriybobchuk.myroomdemo
+package com.andriybobchuk.myroomdemo.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

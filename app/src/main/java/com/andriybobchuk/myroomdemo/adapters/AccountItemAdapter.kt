@@ -1,5 +1,6 @@
 package com.andriybobchuk.myroomdemo.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.view.LayoutInflater
@@ -9,16 +10,20 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.andriybobchuk.myroomdemo.MainFragment
 
 import com.andriybobchuk.myroomdemo.R
 import com.andriybobchuk.myroomdemo.room.AccountDao
 import com.andriybobchuk.myroomdemo.room.AccountEntity
 import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 
 import android.util.DisplayMetrics
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
+import com.andriybobchuk.myroomdemo.activities.CreateAccountActivity
+import com.andriybobchuk.myroomdemo.activities.UpdateAccountActivity
+import com.andriybobchuk.myroomdemo.dialogs.AccountDesignDialog
 
 
 open class AccountItemAdapter(
@@ -28,9 +33,9 @@ open class AccountItemAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
-
     // A global variable for position dragged FROM.
     private var mPositionDraggedFrom = -1
+
     // A global variable for position dragged TO.
     private var mPositionDraggedTo = -1
 
@@ -72,6 +77,7 @@ open class AccountItemAdapter(
      * of the given type. You can either create a new View manually or inflate it from an XML
      * layout file.
      */
+    @SuppressLint("Range", "CutPasteId", "SetTextI18n")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val model = list[position]
 
@@ -80,37 +86,46 @@ open class AccountItemAdapter(
         val deviceWidth = (displayMetrics.widthPixels * 0.78).toInt()
         val deviceHeight = (deviceWidth * 0.6306).toInt()
 
-        holder.itemView.findViewById<CardView>(R.id.cv_add_account).getLayoutParams().width = deviceWidth
-        holder.itemView.findViewById<CardView>(R.id.cv_add_account).getLayoutParams().height = deviceHeight
+        holder.itemView.findViewById<CardView>(R.id.cv_add_account).getLayoutParams().width =
+            deviceWidth
+        holder.itemView.findViewById<CardView>(R.id.cv_add_account).getLayoutParams().height =
+            deviceHeight
 
-        holder.itemView.findViewById<CardView>(R.id.cv_account_item).getLayoutParams().width = deviceWidth
-        holder.itemView.findViewById<CardView>(R.id.cv_account_item).getLayoutParams().height = deviceHeight
-
-
-        var color = model.color
-        //Toast.makeText(context, color, Toast.LENGTH_LONG).show()
-
-       /////// holder.itemView.findViewById<CardView>(R.id.cv_account_item).setBackgroundColor(Color.parseColor(color))
-//
-        // holder.itemView.findViewById<CardView>(R.id.cv_add_account).setBackgroundColor(Color.parseColor(color))
-
+        holder.itemView.findViewById<CardView>(R.id.cv_account_item).getLayoutParams().width =
+            deviceWidth
+        holder.itemView.findViewById<CardView>(R.id.cv_account_item).getLayoutParams().height =
+            deviceHeight
 
         if (holder is MyViewHolder) {
-            if (position == list.size - 1) {
-                holder.itemView.findViewById<CardView>(R.id.cv_add_account).visibility = View.VISIBLE
-                holder.itemView.findViewById<LinearLayout>(R.id.ll_account_item).visibility = View.GONE
+            if (position == list.size - 1) { // if last element
+                holder.itemView.findViewById<CardView>(R.id.cv_add_account).visibility =
+                    View.VISIBLE
+                holder.itemView.findViewById<LinearLayout>(R.id.ll_account_item).visibility =
+                    View.GONE
             } else {
                 holder.itemView.findViewById<CardView>(R.id.cv_add_account).visibility = View.GONE
-                holder.itemView.findViewById<LinearLayout>(R.id.ll_account_item).visibility = View.VISIBLE
+                holder.itemView.findViewById<LinearLayout>(R.id.ll_account_item).visibility =
+                    View.VISIBLE
+
+                holder.itemView.findViewById<LinearLayout>(R.id.ll_card)
+                    .setBackgroundColor(Color.parseColor(model.color))
             }
 
-            holder.itemView.findViewById<TextView>(R.id.tv_amount_on_card).text = "${model.currency} ${model.balance}"
+            holder.itemView.findViewById<TextView>(R.id.tv_amount_on_card).text =
+                "${model.currency} ${model.balance}"
             holder.itemView.findViewById<TextView>(R.id.tv_account_type).text = model.type
             holder.itemView.findViewById<TextView>(R.id.tv_account_name).text = "${model.name}*"
 
             holder.itemView.findViewById<CardView>(R.id.cv_add_account).setOnClickListener {
+                context.startActivity(Intent(context, CreateAccountActivity::class.java))
                 // Inflate the dialog
-                MainFragment().AccountDesignDialog(context, accountDao).show()
+                //AccountDesignDialog(context, accountDao).show()
+            }
+
+            holder.itemView.findViewById<CardView>(R.id.cv_account_item).setOnClickListener {
+
+                context.startActivity(Intent(context, UpdateAccountActivity::class.java)
+                    .putExtra("id", model.id))
             }
         }
     }
@@ -278,7 +293,6 @@ open class AccountItemAdapter(
      */
     private fun Int.toPx(): Int =
         (this * Resources.getSystem().displayMetrics.density).toInt()
-
 
 
     /**
