@@ -2,6 +2,7 @@ package com.andriybobchuk.myroomdemo.room
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.andriybobchuk.myroomdemo.R
 
 @Entity(tableName = "transaction-table")
 data class TransactionEntity(

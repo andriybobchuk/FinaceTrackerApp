@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.andriybobchuk.myroomdemo.adapters.TransactionItemAdapter
 import com.andriybobchuk.myroomdemo.databinding.FragmentHistoryBinding
 import com.andriybobchuk.myroomdemo.databinding.FragmentMainBinding
+import com.andriybobchuk.myroomdemo.room.CategoryEntity
 import com.andriybobchuk.myroomdemo.room.TransactionEntity
 import com.andriybobchuk.myroomdemo.util.FinanceApp
 import kotlinx.coroutines.flow.collect
@@ -60,11 +61,15 @@ class HistoryFragment : Fragment() {
         val transactionDao = (activity?.application!! as FinanceApp).db.transactionDao()
 
         lifecycleScope.launch {
+
             transactionDao.fetchAllTransactions().collect { itr ->
 
-                var sortedList = ArrayList(itr).sortedWith(compareByDescending { SimpleDateFormat("d MMM yyyy").parse(it.date) })
+                MainFragment.mCategoryDao.fetchAllCategories().collect {
 
-                populateTransactionListToUI(ArrayList(sortedList))
+                    var sortedList = ArrayList(itr).sortedWith(compareByDescending { SimpleDateFormat("d MMM yyyy").parse(it.date) })
+
+                    populateTransactionListToUI(ArrayList(sortedList), ArrayList(it))
+                }
             }
         }
 
@@ -89,7 +94,7 @@ class HistoryFragment : Fragment() {
     /**
      * A function to populate the result of BOARDS list in the UI i.e in the recyclerView.
      */
-    fun populateTransactionListToUI(transactionList: ArrayList<TransactionEntity>) {
+    fun populateTransactionListToUI(transactionList: ArrayList<TransactionEntity>, categoryList: ArrayList<CategoryEntity>) {
 
         if (transactionList.size > 0) {
 
@@ -101,8 +106,7 @@ class HistoryFragment : Fragment() {
             binding.rvTransactionsList.setHasFixedSize(true)
 
             // Create an instance of BoardItemsAdapter and pass the boardList to it.
-            // TODO: I removed "this"
-            val adapter = TransactionItemAdapter(transactionList)
+            val adapter = TransactionItemAdapter(transactionList, categoryList)
             binding.rvTransactionsList.adapter = adapter // Attach the adapter to the recyclerView.
 
         } else {

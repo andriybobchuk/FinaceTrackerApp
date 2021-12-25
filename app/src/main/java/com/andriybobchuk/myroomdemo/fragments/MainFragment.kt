@@ -9,10 +9,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.andriybobchuk.myroomdemo.databinding.DialogUpdateBinding
 import com.andriybobchuk.myroomdemo.databinding.FragmentMainBinding
-import com.andriybobchuk.myroomdemo.room.AccountDao
-import com.andriybobchuk.myroomdemo.room.AccountEntity
-import com.andriybobchuk.myroomdemo.room.TransactionDao
-import com.andriybobchuk.myroomdemo.room.TransactionEntity
 import kotlinx.coroutines.launch
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -30,9 +26,12 @@ import kotlinx.coroutines.flow.collect
 import java.util.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.andriybobchuk.myroomdemo.R
+import com.andriybobchuk.myroomdemo.activities.MainActivity
 import com.andriybobchuk.myroomdemo.adapters.AccountItemAdapter
 import com.andriybobchuk.myroomdemo.databinding.DesignNewAccountDialogFragmentBinding
 import com.andriybobchuk.myroomdemo.dialogs.ColorListDialog
+import com.andriybobchuk.myroomdemo.room.*
+import java.lang.Exception
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -58,6 +57,7 @@ class MainFragment : Fragment() {
 
     companion object {
         lateinit var mAccountDao: AccountDao
+        lateinit var mCategoryDao: CategoryDao
     }
 
 
@@ -77,20 +77,22 @@ class MainFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        savedInstanceState: Bundle?): View? {
+
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         val view = binding.root
 
-
-        var accountsArrayAdapter: ArrayAdapter<String>? = null
-
         setCurrentDate()
 
+
         // TODO:bug with double click to load account list
-        var accountList: ArrayList<AccountEntity>? = null
+
+
+        // Accounts list (The big cards at the top)
         var accountDao = (activity?.application!! as FinanceApp).db.accountDao()
         mAccountDao = accountDao
+
+        var accountList: ArrayList<AccountEntity>? = null
         lifecycleScope.launch {
             accountDao!!.fetchAllAccounts().collect { itr ->
                 accountList = ArrayList(itr)
@@ -98,26 +100,43 @@ class MainFragment : Fragment() {
             }
         }
 
-        val transactionDao = (activity?.application!! as FinanceApp).db.transactionDao()
-        binding?.btnAddTransaction?.setOnClickListener {
-            addRecord(transactionDao, accountDao)
-        }
 
-
-        val categoriesSpinner = binding?.sCategory
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter.createFromResource(
-            activity?.applicationContext!!,
-            R.array.transaction_categories_array,
-            R.layout.spinner_item
-        ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            categoriesSpinner?.adapter = adapter
-        }
+        // Categories spinner
+        var categoryDao = (activity?.application!! as FinanceApp).db.categoryDao()
+        mCategoryDao = categoryDao
 
         //todo: bug with accountsArrayAdapter?.notifyDataSetChanged()
+        var categoriesArrayAdapter: ArrayAdapter<String>? = null
+        val categoriesArray = arrayListOf<String>()
+        lifecycleScope.launch {
+            categoryDao.fetchAllCategories().collect { itr ->
+                val list = ArrayList(itr)
+                list.forEach {
+                    categoriesArray.add(it.name)
+                }
+                categoriesArrayAdapter?.notifyDataSetChanged()
+            }
+        }
+        categoriesArrayAdapter = ArrayAdapter<String>(
+            activity?.applicationContext!!,
+            R.layout.spinner_item, categoriesArray
+        )
+        categoriesArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val categoriesSpinner = binding?.sCategory
+        categoriesSpinner?.adapter = categoriesArrayAdapter
+        categoriesSpinner?.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+        }
+
+
+
+        //todo: bug with accountsArrayAdapter?.notifyDataSetChanged()
+        var accountsArrayAdapter: ArrayAdapter<String>? = null
         val accountsArray = arrayListOf<String>()
         lifecycleScope.launch {
             accountDao!!.fetchAllAccounts().collect { itr ->
@@ -143,6 +162,12 @@ class MainFragment : Fragment() {
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
+        }
+
+
+        val transactionDao = (activity?.application!! as FinanceApp).db.transactionDao()
+        binding?.btnAddTransaction?.setOnClickListener {
+            addRecord(transactionDao, accountDao)
         }
 
 
@@ -196,6 +221,9 @@ class MainFragment : Fragment() {
         val account = binding?.sAccount?.selectedItem.toString()
         val description = binding?.etDescription?.text.toString()
 
+
+
+
         if (date.isNotEmpty()
             && amount.isNotEmpty()
             && category.isNotEmpty()
@@ -207,40 +235,78 @@ class MainFragment : Fragment() {
 
 //            }
 
-            lifecycleScope.launch {
-
-                var currency = ""
-                var id = -1
-                var balance  = ""
+            var currency = ""
+           // var id = -1
+           // var balance  = ""
 
 
-                accountDao.fetchAccountByName(account).collect {
-                    if (it != null) {
-                        currency = it.currency
-                        balance = it.balance
-                        id = it.id
+            try {
+                lifecycleScope.launch {
+//                    accountDao.fetchAccountByName(account) {
+//
+//                    }
 
+                    accountDao.fetchAccountByName(account).collect {
                         transactionDao.insert(
                             TransactionEntity(
                                 date = date,
                                 amount = amount,
                                 category = category,
                                 account = account,
-                                currency = currency,
+                                currency = it.currency,
                                 description = description
                             )
                         )
                     }
+                    // balance = accountDao.fetchAccountByName(account).balance
+                    // id = accountDao.fetchAccountByName(account).id
+
+
                 }
 
-                accountDao.update(
-                    AccountEntity(
-                        id = id,
-                        name = account,
-                        balance = (balance.toDouble() + amount.toDouble()).toString()
-                    )
-                )
+            } catch (e: Exception) {
+                Toast.makeText(context, "${e}", Toast.LENGTH_LONG).show()
             }
+
+
+
+
+
+
+//            lifecycleScope.launch {
+//
+//                var currency = ""
+//                var id = -1
+//                var balance  = ""
+//
+//
+//                accountDao.fetchAccountByName(account).collect {
+//                    if (it != null) {
+//                        currency = it.currency
+//                        balance = it.balance
+//                        id = it.id
+//
+//                        transactionDao.insert(
+//                            TransactionEntity(
+//                                date = date,
+//                                amount = amount,
+//                                category = category,
+//                                account = account,
+//                                currency = currency,
+//                                description = description
+//                            )
+//                        )
+//                    }
+//                }
+//
+//                accountDao.update(
+//                    AccountEntity(
+//                        id = id,
+//                        name = account,
+//                        balance = (balance.toDouble() + amount.toDouble()).toString()
+//                    )
+//                )
+//            }
             // Clearing the text fields
             binding?.etAmount?.text?.clear()
             binding?.etDescription?.text?.clear()

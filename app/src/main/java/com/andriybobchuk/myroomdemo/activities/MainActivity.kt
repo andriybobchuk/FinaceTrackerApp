@@ -2,8 +2,10 @@ package com.andriybobchuk.myroomdemo.activities
 
 
 import android.app.PendingIntent.getActivity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -19,6 +21,9 @@ import androidx.fragment.app.FragmentTransaction
 import com.andriybobchuk.myroomdemo.R
 import com.andriybobchuk.myroomdemo.databinding.ContentMainBinding
 import com.andriybobchuk.myroomdemo.databinding.DrawerHeaderBinding
+import com.andriybobchuk.myroomdemo.room.AccountDao
+import com.andriybobchuk.myroomdemo.room.CategoryDao
+import com.andriybobchuk.myroomdemo.util.FinanceApp
 import com.andriybobhcuk.manageux.activities.BaseActivity
 
 
@@ -36,57 +41,50 @@ class MainActivity : BaseActivity() {
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding?.root)
 
+        // Bottom Navigation
         val navController = findNavController(R.id.nav_host_fragment)
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.setupWithNavController(navController)
 
 
-//        val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-//            when (item.itemId) {
-//                R.id.mainFragment -> {
-//                    findViewById<TextView>(R.id.tv_action_bar_title).text = "MAIN or null"
-//                }
-//                R.id.historyFragment -> {
-//                    findViewById<TextView>(R.id.tv_action_bar_title).text = "HIS or null"
-//                } else -> {
-//                    findViewById<TextView>(R.id.tv_action_bar_title).text = "MAIN or null"
-//                }
-//            }
-//            false
-//        }
-//        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        // Drawer
+        mainBinding?.navView?.setNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.drawer_currency -> {
+                    // handle click
+                    true
+                }
+                R.id.drawer_category-> {
+                    startActivity(Intent(applicationContext, CategoryActivity::class.java))
+                    true
+                }
+                R.id.drawer_recurring -> {
+                    // handle click
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
 
 
         setupActionBar()
-
     }
+
+
+
 
     private fun setupActionBar() {
-
-        //findViewById<TextView>(R.id.tv_action_bar_title).text = "${getVisibleFragment()} or null"
-
-
-
-//        val currentFragment = supportFragmentManager.fragments.last()?.getChildFragmentManager()?.getFragments()?.get(0)
-//        if (currentFragment is MainFragment) {
-//            findViewById<TextView>(R.id.tv_action_bar_title).text = "main or null"
-//        } else {
-//            findViewById<TextView>(R.id.tv_action_bar_title).text = "history or null"
-//
-//        }
-
         findViewById<ImageView>(R.id.iv_burger).setOnClickListener {
-            toggleDrawer()
+            if(findViewById<DrawerLayout>(R.id.drawer_layout).isDrawerOpen(GravityCompat.START)) {
+                findViewById<DrawerLayout>(R.id.drawer_layout).closeDrawer(GravityCompat.START)
+            } else {
+                findViewById<DrawerLayout>(R.id.drawer_layout).openDrawer(GravityCompat.START)
+            }
         }
     }
 
-    private fun toggleDrawer() {
-        if(findViewById<DrawerLayout>(R.id.drawer_layout).isDrawerOpen(GravityCompat.START)) {
-            findViewById<DrawerLayout>(R.id.drawer_layout).closeDrawer(GravityCompat.START)
-        } else {
-            findViewById<DrawerLayout>(R.id.drawer_layout).openDrawer(GravityCompat.START)
-        }
-    }
 
     fun getVisibleFragment(): Fragment? {
         val fragmentManager: FragmentManager = this@MainActivity.supportFragmentManager

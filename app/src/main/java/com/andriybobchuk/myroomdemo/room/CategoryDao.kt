@@ -15,20 +15,20 @@ interface CategoryDao {
     takes relatively long time. That means we want to run it on background thread
      */
     @Insert
-    suspend fun insert(categoryEntity: AccountEntity)
+    suspend fun insert(categoryEntity: CategoryEntity)
 
     @Update
-    suspend fun update(categoryEntity: AccountEntity)
+    suspend fun update(categoryEntity: CategoryEntity)
 
     @Delete
-    suspend fun delete(categoryEntity: AccountEntity)
+    suspend fun delete(categoryEntity: CategoryEntity)
 
     @Query("SELECT * FROM `category-table`")
     fun fetchAllCategories():Flow<List<CategoryEntity>>
 
-    @Query("SELECT * FROM `account-table` WHERE id=:id")
-    fun fetchAccountById(id: Int):Flow<CategoryEntity>
+    @Query("SELECT * FROM `category-table` WHERE id=:id")
+    fun fetchCategoryById(id: Int):Flow<CategoryEntity>
 
-    @Query("SELECT * FROM `account-table` WHERE name=:name")
-    fun fetchAccountByName(name: String):Flow<AccountEntity>
+    @Query("SELECT * FROM `category-table` WHERE name=:name")
+    fun fetchCategoryByName(name: String):CategoryEntity
 }

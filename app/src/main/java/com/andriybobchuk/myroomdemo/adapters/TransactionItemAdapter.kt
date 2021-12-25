@@ -1,15 +1,26 @@
 package com.andriybobchuk.myroomdemo.adapters
 
 import android.graphics.Color
+import android.provider.SyncStateContract
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat.getColor
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.andriybobchuk.myroomdemo.R
 import com.andriybobchuk.myroomdemo.databinding.ItemsRowBinding
+import com.andriybobchuk.myroomdemo.fragments.MainFragment
+import com.andriybobchuk.myroomdemo.room.CategoryEntity
 import com.andriybobchuk.myroomdemo.room.TransactionEntity
+import com.andriybobchuk.myroomdemo.util.Constants
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import java.lang.Exception
 
-class TransactionItemAdapter(private val items: ArrayList<TransactionEntity>
+class TransactionItemAdapter(
+    private val items: ArrayList<TransactionEntity>,
+    private val categories: ArrayList<CategoryEntity>
                   ) : RecyclerView.Adapter<TransactionItemAdapter.ViewHolder>() {
 
     class ViewHolder(binding: ItemsRowBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -34,61 +45,19 @@ class TransactionItemAdapter(private val items: ArrayList<TransactionEntity>
         holder.tvTransactionItemRowDate.text = item.date
         holder.tvTransactionItemRowDescription.text = item.description
 
-        when (item.category) {
-            "Groceries" -> {
-                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_groceries)
-                holder.tvTransactionItemRowAmount.text = "-${item.amount} ${item.currency}"
-            }
-            "Transportation" -> {
-                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_transportation)
-                holder.tvTransactionItemRowAmount.text = "-${item.amount} ${item.currency}"
-            }
-            "Rent" -> {
-                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_rent)
-                holder.tvTransactionItemRowAmount.text = "-${item.amount} ${item.currency}"
-            }
-            "Subscriptions" -> {
-                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_subscriptions)
-                holder.tvTransactionItemRowAmount.text = "-${item.amount} ${item.currency}"
-            }
-            "Healthcare" -> {
-                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_healthcare)
-                holder.tvTransactionItemRowAmount.text = "-${item.amount} ${item.currency}"
-            }
-            "Entertainment" -> {
-                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_entertainment)
-                holder.tvTransactionItemRowAmount.text = "-${item.amount} ${item.currency}"
-            }
-            "Internet" -> {
-                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_internet)
-                holder.tvTransactionItemRowAmount.text = "-${item.amount} ${item.currency}"
-            }
-            "Barber" -> {
-                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_other_expense)
-                holder.tvTransactionItemRowAmount.text = "-${item.amount} ${item.currency}"
-            }
-            "Other Expenses" -> {
-                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_other_expense)
-                holder.tvTransactionItemRowAmount.text = "-${item.amount} ${item.currency}"
-            }
+        for (category in categories) {
 
-            // INCOMES:
-            "Salary" -> {
-                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_salary)
-                holder.tvTransactionItemRowAmount.text = "+${item.amount} ${item.currency}"
-                holder.tvTransactionItemRowAmount.setTextColor(getColor(context, R.color.income_color))
-            }
-            "Royalty" -> {
-                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_royalties)
-                holder.tvTransactionItemRowAmount.text = "+${item.amount} ${item.currency}"
-                holder.tvTransactionItemRowAmount.setTextColor(getColor(context, R.color.income_color))
-            }
-            "Other Incomes" -> {
-                holder.ivTransactionItemRowCategory.setImageResource(R.drawable.ic_other_income)
-                holder.tvTransactionItemRowAmount.text = "+${item.amount} ${item.currency}"
-                holder.tvTransactionItemRowAmount.setTextColor(getColor(context, R.color.income_color))
-            }
+            if(category.name == item.category) {
 
+                if(category.type == Constants.EXPENSE) {
+                    holder.tvTransactionItemRowAmount.text = "-${item.amount} ${item.currency}"
+                    holder.tvTransactionItemRowAmount.setTextColor(getColor(context, R.color.primary_text_color))
+                } else {
+                    holder.tvTransactionItemRowAmount.text = "+${item.amount} ${item.currency}"
+                    holder.tvTransactionItemRowAmount.setTextColor(getColor(context, R.color.income_color))
+                }
+                holder.ivTransactionItemRowCategory.setImageResource(category.icon)
+            }
         }
 
     }

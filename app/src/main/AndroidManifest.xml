@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyRoomDemo">
         <activity
+            android:name=".activities.CategoryActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.UpdateAccountActivity"
             android:exported="true" />
         <activity
