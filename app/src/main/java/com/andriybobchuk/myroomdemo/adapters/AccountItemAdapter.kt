@@ -88,7 +88,7 @@ open class AccountItemAdapter(
 
         holder.itemView.findViewById<CardView>(R.id.cv_add_account).getLayoutParams().width =
             deviceWidth
-        holder.itemView.findViewById<CardView>(R.id.cv_add_account).getLayoutParams().height =
+        holder.itemView.findViewById<CardView>(R.id.cv_add_account).layoutParams.height =
             deviceHeight
 
         holder.itemView.findViewById<CardView>(R.id.cv_account_item).getLayoutParams().width =
@@ -111,8 +111,10 @@ open class AccountItemAdapter(
                     .setBackgroundColor(Color.parseColor(model.color))
             }
 
-            holder.itemView.findViewById<TextView>(R.id.tv_amount_on_card).text =
-                "${model.currency} ${model.balance}"
+            if(model.balance.isNotEmpty()) {
+                holder.itemView.findViewById<TextView>(R.id.tv_amount_on_card).text =
+                    "${model.currency} ${"%.2f".format((model.balance).toDouble()).toDouble()}"
+            }
             holder.itemView.findViewById<TextView>(R.id.tv_account_type).text = model.type
             holder.itemView.findViewById<TextView>(R.id.tv_account_name).text = "${model.name}*"
 
@@ -124,8 +126,10 @@ open class AccountItemAdapter(
 
             holder.itemView.findViewById<CardView>(R.id.cv_account_item).setOnClickListener {
 
-                context.startActivity(Intent(context, UpdateAccountActivity::class.java)
-                    .putExtra("id", model.id))
+                context.startActivity(
+                    Intent(context, UpdateAccountActivity::class.java)
+                        .putExtra("id", model.id)
+                )
             }
         }
     }

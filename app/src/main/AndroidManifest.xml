@@ -11,6 +11,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyRoomDemo">
         <activity
+            android:name=".activities.SplashScreenActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".activities.CategoryActivity"
             android:exported="true" />
         <activity
@@ -25,11 +34,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyRoomDemo"
             android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

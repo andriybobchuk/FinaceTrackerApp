@@ -7,13 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.andriybobchuk.myroomdemo.activities.MainActivity
 import com.andriybobchuk.myroomdemo.adapters.TransactionItemAdapter
 import com.andriybobchuk.myroomdemo.databinding.FragmentHistoryBinding
 import com.andriybobchuk.myroomdemo.databinding.FragmentMainBinding
 import com.andriybobchuk.myroomdemo.room.CategoryEntity
 import com.andriybobchuk.myroomdemo.room.TransactionEntity
 import com.andriybobchuk.myroomdemo.util.FinanceApp
+import com.happyplaces.utils.SwipeToDeleteCallback
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -55,6 +59,11 @@ class HistoryFragment : Fragment() {
         val view = binding.root
 
 
+        binding.ivBurger.setOnClickListener {
+            MainActivity().setupActionBar()
+        }
+
+
         //val transactionArray = arrayListOf<String>()
 
         var transactionsList: ArrayList<TransactionEntity>? = null
@@ -82,13 +91,6 @@ class HistoryFragment : Fragment() {
 
         return view
     }
-
-
-
-
-
-
-
 
 
     /**

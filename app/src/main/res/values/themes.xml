@@ -15,23 +15,28 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
         <!-- Navigation bar color (+ modified in v27 file). -->
         <item name="android:navigationBarColor">@color/tab_bar_color</item>
-        <!-- CalendarPicker dialog color theme customization. -->
-        <item name="android:datePickerDialogTheme">@style/MyDatePickerDialogTheme</item>
 
         <!-- Colors for EditText etc. -->
         <item name="colorControlNormal">#c5c5c5</item>
         <item name="colorControlActivated">@color/accent_color</item>
         <item name="colorControlHighlight">@color/accent_color</item>
 
+        <!-- For transparent status bar -->
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:fitsSystemWindows">false</item>
+
     </style>
 
     <style name="Theme_Dialog" parent="ThemeOverlay.AppCompat.Dialog">
-        <item name="android:windowMinWidthMajor">90%</item>
-        <item name="android:windowMinWidthMinor">90%</item>
+        <item name="android:windowMinWidthMajor">97%</item>
+        <item name="android:windowMinWidthMinor">97%</item>
     </style>
 
-    <style name="MyDatePickerDialogTheme" parent="android:Theme.Material.Light.Dialog">
-        <item name="android:colorAccent">@color/tab_bar_color</item>
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/tab_bar_color</item>
     </style>
 
     <style name="SpinnerTheme">
@@ -50,6 +55,13 @@
         <item name="android:fontFamily">@font/segoeui</item>
         <item name="android:textSize">15sp</item>
         <item name="paddingBottomNoButtons">4dp</item>
+    </style>
+
+    <style name="BigEditTextTheme" parent="Widget.AppCompat.EditText">
+        <item name="colorControlActivated">@color/accent_color</item>
+        <item name="colorControlNormal">@color/spinner_color</item>
+        <item name="android:textColor">@color/primary_text_color</item>
+        <item name="android:fontFamily">@font/segoeuib</item>
     </style>
 
 

@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/drawer_currency"
-            android:icon="@drawable/ic_baseline_currency_pound_24"
-            android:title="Currencies" />
+            android:id="@+id/drawer_home"
+            android:icon="@drawable/ic_baseline_home_24"
+            android:title="Home" />
 
         <item
             android:id="@+id/drawer_category"

@@ -22,5 +22,6 @@
     <color name="snackbar_error_color">#D93025</color>
 
     <color name="income_color">#316552</color>
+    <color name="grey_background_color">#F7F7F7</color>
 
 </resources>

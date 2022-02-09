@@ -38,7 +38,10 @@ class UpdateAccountActivity : AppCompatActivity() {
             finish()
         }
 
-        binding?.btnDelete?.setOnClickListener { deleteAccount() }
+        binding?.btnDelete?.setOnClickListener {
+            deleteAccount()
+            finish()
+        }
 
         val currenciesSpinner = binding?.sCurrency
         ArrayAdapter.createFromResource(
@@ -66,14 +69,16 @@ class UpdateAccountActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
 
-            MainFragment.mAccountDao!!.fetchAccountById(
+            MainFragment.mAccountDao.fetchAccountById(
                 intent.getIntExtra("id", 0)
-            ).collect { itr ->
-                binding?.etName?.setText(itr.name)
+            ).collect {
+                if(it != null) {
+                    binding?.etName?.setText(it.name)
 //                binding?.sCurrency?.selectedItem
 //                binding?.sType?.selectedItem
-                binding?.etBalance?.setText(itr.balance)
-                binding?.vColor?.setBackgroundColor(Color.parseColor(itr.color.toString()))
+                    binding?.etBalance?.setText(it.balance)
+                    binding?.vColor?.setBackgroundColor(Color.parseColor(it.color.toString()))
+                }
             }
         }
     }
@@ -85,14 +90,13 @@ class UpdateAccountActivity : AppCompatActivity() {
         val currency = binding?.sCurrency?.selectedItem.toString()
         val type = binding?.sType?.selectedItem.toString()
         val balance = binding?.etBalance?.text.toString()
-        val color = mSelectedColor
-
+        //TODO: Fix bug with color
+        // val color = binding?.vColor?.background.getColor()
         if (
             name.isNotEmpty() &&
             currency.isNotEmpty() &&
             type.isNotEmpty() &&
-            balance.isNotEmpty() &&
-            color.isNotEmpty()
+            balance.isNotEmpty()
         ) {
             var account = AccountEntity(
                 id = intent.getIntExtra("id", 0),
@@ -100,7 +104,7 @@ class UpdateAccountActivity : AppCompatActivity() {
                 currency = currency,
                 type = type,
                 balance = balance,
-                color = color
+                color = mSelectedColor // TODO
             )
 
             lifecycleScope.launch {

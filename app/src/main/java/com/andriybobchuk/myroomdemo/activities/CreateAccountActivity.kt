@@ -35,6 +35,7 @@ class CreateAccountActivity : AppCompatActivity() {
 
         binding?.btnAdd?.setOnClickListener {
             createAccount()
+            MainFragment.mAccountsArrayAdapter.clear()
             finish()
         }
 

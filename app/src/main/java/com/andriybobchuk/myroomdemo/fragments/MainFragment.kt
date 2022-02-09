@@ -31,6 +31,8 @@ import com.andriybobchuk.myroomdemo.adapters.AccountItemAdapter
 import com.andriybobchuk.myroomdemo.databinding.DesignNewAccountDialogFragmentBinding
 import com.andriybobchuk.myroomdemo.dialogs.ColorListDialog
 import com.andriybobchuk.myroomdemo.room.*
+import com.andriybobchuk.myroomdemo.util.Constants
+import kotlinx.coroutines.runBlocking
 import java.lang.Exception
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -58,6 +60,9 @@ class MainFragment : Fragment() {
     companion object {
         lateinit var mAccountDao: AccountDao
         lateinit var mCategoryDao: CategoryDao
+        lateinit var mTransactionDao: TransactionDao
+        lateinit var mAccountsArrayAdapter: ArrayAdapter<String>
+        lateinit var mCategoriesArrayAdapter: ArrayAdapter<String>
     }
 
 
@@ -77,16 +82,17 @@ class MainFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
+        savedInstanceState: Bundle?
+    ): View? {
 
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         val view = binding.root
 
         setCurrentDate()
 
-
-        // TODO:bug with double click to load account list
-
+        binding.ivBurger.setOnClickListener {
+            MainActivity().setupActionBar()
+        }
 
         // Accounts list (The big cards at the top)
         var accountDao = (activity?.application!! as FinanceApp).db.accountDao()
@@ -105,7 +111,6 @@ class MainFragment : Fragment() {
         var categoryDao = (activity?.application!! as FinanceApp).db.categoryDao()
         mCategoryDao = categoryDao
 
-        //todo: bug with accountsArrayAdapter?.notifyDataSetChanged()
         var categoriesArrayAdapter: ArrayAdapter<String>? = null
         val categoriesArray = arrayListOf<String>()
         lifecycleScope.launch {
@@ -132,6 +137,7 @@ class MainFragment : Fragment() {
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
         }
+        mCategoriesArrayAdapter = categoriesArrayAdapter
 
 
 
@@ -163,9 +169,11 @@ class MainFragment : Fragment() {
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
         }
+        mAccountsArrayAdapter = accountsArrayAdapter
 
 
         val transactionDao = (activity?.application!! as FinanceApp).db.transactionDao()
+        mTransactionDao = transactionDao
         binding?.btnAddTransaction?.setOnClickListener {
             addRecord(transactionDao, accountDao)
         }
@@ -213,6 +221,15 @@ class MainFragment : Fragment() {
 //
 //    }
 
+
+//    private fun getAccount(name: String): AccountEntity {
+//        lifecycleScope.launch {
+//            mAccountDao.fetchAccountByName(name).collect {
+//                return@collect
+//            }
+//        }
+//    }
+
     // Add Transaction
     private fun addRecord(transactionDao: TransactionDao, accountDao: AccountDao) {
         val date = binding?.tvTransactionDate?.text.toString()
@@ -221,95 +238,77 @@ class MainFragment : Fragment() {
         val account = binding?.sAccount?.selectedItem.toString()
         val description = binding?.etDescription?.text.toString()
 
-
-
-
         if (date.isNotEmpty()
             && amount.isNotEmpty()
             && category.isNotEmpty()
             && account.isNotEmpty()
         ) {
+            // 1 - Get account entity from the db
+            // 2 - Insert transaction
+            // 3 - Check it
 
-//            lifecycleScope.launch {
-//                // We gotta add or remove the amount of transaction to or from the balance
+            var updated = false
+            lifecycleScope.launch {
 
-//            }
+                accountDao.fetchAccountByName(account)
+                    .collect { // Getting account we're talking about
 
-            var currency = ""
-           // var id = -1
-           // var balance  = ""
+                        if(!updated) {
 
 
-            try {
-                lifecycleScope.launch {
-//                    accountDao.fetchAccountByName(account) {
-//
-//                    }
+                            mCategoryDao.fetchCategoryByName(category).collect { category_it ->
 
-                    accountDao.fetchAccountByName(account).collect {
-                        transactionDao.insert(
-                            TransactionEntity(
-                                date = date,
-                                amount = amount,
-                                category = category,
-                                account = account,
-                                currency = it.currency,
-                                description = description
-                            )
-                        )
+                                var balance: String
+                                if(category_it.type == Constants.EXPENSE) {
+                                    if(it.balance.toDouble() >= amount.toDouble()){
+                                        balance = (it.balance.toDouble() - amount.toDouble()).toString()
+                                    } else if (amount.toDouble() == (0).toDouble()){
+                                        Toast.makeText(activity, "Transaction amount cannot be 0", Toast.LENGTH_LONG).show()
+                                        return@collect
+                                    } else {
+                                        Toast.makeText(activity, "Not enough funds for this operation", Toast.LENGTH_LONG).show()
+                                        return@collect
+                                    }
+                                } else {
+                                    balance = (it.balance.toDouble() + amount.toDouble()).toString()
+                                }
+
+                                // Making transaction
+                                transactionDao.insert(
+                                    TransactionEntity(
+                                        date = date,
+                                        amount = amount,
+                                        category = category,
+                                        account = account,
+                                        currency = it.currency,
+                                        description = description
+                                    )
+                                )
+
+                                // Updating the account's balance
+                                accountDao.update(
+                                    AccountEntity(
+                                        id = it.id,
+                                        name = it.name,
+                                        type = it.type,
+                                        currency = it.currency,
+                                        balance = balance,
+                                        color = it.color
+                                    )
+                                )
+                            }
+                            updated = true
+
+                        }
                     }
-                    // balance = accountDao.fetchAccountByName(account).balance
-                    // id = accountDao.fetchAccountByName(account).id
-
-
-                }
-
-            } catch (e: Exception) {
-                Toast.makeText(context, "${e}", Toast.LENGTH_LONG).show()
             }
 
 
 
-
-
-
-//            lifecycleScope.launch {
-//
-//                var currency = ""
-//                var id = -1
-//                var balance  = ""
-//
-//
-//                accountDao.fetchAccountByName(account).collect {
-//                    if (it != null) {
-//                        currency = it.currency
-//                        balance = it.balance
-//                        id = it.id
-//
-//                        transactionDao.insert(
-//                            TransactionEntity(
-//                                date = date,
-//                                amount = amount,
-//                                category = category,
-//                                account = account,
-//                                currency = currency,
-//                                description = description
-//                            )
-//                        )
-//                    }
-//                }
-//
-//                accountDao.update(
-//                    AccountEntity(
-//                        id = id,
-//                        name = account,
-//                        balance = (balance.toDouble() + amount.toDouble()).toString()
-//                    )
-//                )
-//            }
             // Clearing the text fields
             binding?.etAmount?.text?.clear()
             binding?.etDescription?.text?.clear()
+
 
         } else {
             Toast.makeText(activity, "Fill the obligatory fields!", Toast.LENGTH_LONG).show()
@@ -414,7 +413,7 @@ class MainFragment : Fragment() {
 
 
         val dpd = DatePickerDialog(
-            requireContext(),
+            requireContext(), R.style.DialogTheme,
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
 
@@ -462,8 +461,6 @@ class MainFragment : Fragment() {
         val adapter = AccountItemAdapter(requireContext(), accountList, accountDao)
         binding.rvAccountList.adapter = adapter // Attach the adapter to the recyclerView.
     }
-
-
 
 
 }

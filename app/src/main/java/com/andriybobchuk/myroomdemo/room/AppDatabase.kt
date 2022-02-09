@@ -16,7 +16,7 @@ import androidx.room.RoomDatabase
     AccountEntity::class,
     TransactionEntity::class,
     CategoryEntity::class
-                     ], version = 14)
+                     ], version = 17)
 abstract class AppDatabase:RoomDatabase() {
 
     abstract fun accountDao(): AccountDao

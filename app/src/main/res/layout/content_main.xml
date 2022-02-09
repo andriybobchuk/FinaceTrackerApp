@@ -4,49 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MainActivity">
-
-    <LinearLayout
-        android:id="@+id/rv_appBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:paddingBottom="8dp">
-
-        <ImageView
-            android:id="@+id/iv_burger"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
-            android:layout_marginLeft="45dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/ic_drawer_menu_button" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="45dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginTop="22dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_action_bar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/segoeuib"
-                android:text="Ins'n'Outs"
-                android:textColor="@color/headline_text_color"
-                android:textSize="30dp"
-                />
-        </LinearLayout>
-
-    </LinearLayout>
-
+    tools:context=".activities.MainActivity"
+    android:fitsSystemWindows="true"
+    android:windowTranslucentStatus="false">
 
     <fragment
         android:id="@+id/nav_host_fragment"
@@ -57,7 +17,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_appBar"
+        app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/my_nav" />
 
 

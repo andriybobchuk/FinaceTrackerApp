@@ -15,4 +15,9 @@
         android:name="com.andriybobchuk.myroomdemo.fragments.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" />
+    <fragment
+        android:id="@+id/analysisFragment"
+        android:name="com.andriybobchuk.myroomdemo.fragments.AnalysisFragment"
+        android:label="fragment_analysis"
+        tools:layout="@layout/fragment_analysis" />
 </navigation>

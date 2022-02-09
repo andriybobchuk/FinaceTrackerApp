@@ -5,8 +5,10 @@ import android.provider.SyncStateContract
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat.getColor
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.andriybobchuk.myroomdemo.R
 import com.andriybobchuk.myroomdemo.databinding.ItemsRowBinding
@@ -14,6 +16,7 @@ import com.andriybobchuk.myroomdemo.fragments.MainFragment
 import com.andriybobchuk.myroomdemo.room.CategoryEntity
 import com.andriybobchuk.myroomdemo.room.TransactionEntity
 import com.andriybobchuk.myroomdemo.util.Constants
+import com.happyplaces.utils.SwipeToDeleteCallback
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.lang.Exception
@@ -59,6 +62,19 @@ class TransactionItemAdapter(
                 holder.ivTransactionItemRowCategory.setImageResource(category.icon)
             }
         }
+
+//        val deleteSwipeHandler = object : SwipeToDeleteCallback(context) {
+//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+//
+////                    val adapter = binding.rvTransactionsList.adapter as TransactionItemAdapter
+////                    adapter.removeAt(viewHolder.adapterPosition)
+////                    getHappyPlacesListFromLocalDB() // Gets the latest list from the local database after item being delete from it.
+////                    // END
+//            }
+//        }
+//        val deleteItemTouchHelper = ItemTouchHelper(deleteSwipeHandler)
+//        deleteItemTouchHelper.attachToRecyclerView(binding.rvTransactionsList)
+//        // END
 
     }
 

@@ -30,5 +30,5 @@ interface CategoryDao {
     fun fetchCategoryById(id: Int):Flow<CategoryEntity>
 
     @Query("SELECT * FROM `category-table` WHERE name=:name")
-    fun fetchCategoryByName(name: String):CategoryEntity
+    fun fetchCategoryByName(name: String):Flow<CategoryEntity>
 }

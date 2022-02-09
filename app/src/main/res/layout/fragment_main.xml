@@ -7,7 +7,44 @@
     android:background="@color/white"
     tools:context=".MainFragment">
 
+    <LinearLayout
+        android:id="@+id/rv_appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingBottom="8dp">
 
+        <ImageView
+            android:id="@+id/iv_burger"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginLeft="@dimen/burger_marginLeft"
+            android:layout_marginTop="@dimen/burger_marginTop"
+            android:src="@drawable/ic_drawer_menu_button" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="22dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_action_bar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/segoeuib"
+                android:text="Accounts"
+                android:textColor="@color/headline_text_color"
+                android:textSize="30sp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
 
 
     <LinearLayout
@@ -18,7 +55,7 @@
         android:paddingVertical="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/rv_appBar">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_account_list"
@@ -66,6 +103,7 @@
             android:background="@android:color/transparent"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="9dp"
+            android:theme="@style/BigEditTextTheme"
             />
 
         <EditText
@@ -126,6 +164,7 @@
                 android:layout_marginRight="6dp"
                 android:text="Add Transaction"
                 android:textAllCaps="false"
+                android:elevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

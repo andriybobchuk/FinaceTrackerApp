@@ -2,10 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="200dp"
     android:gravity="center"
     android:orientation="vertical"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:background="@drawable/side_nav_bar"
+    android:fitsSystemWindows="true"
+    android:windowTranslucentStatus="false"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -27,11 +31,12 @@
 
         <ImageView
             android:id="@+id/iv_close_burger"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_gravity="center"
             android:layout_marginRight="40dp"
-            android:src="@drawable/ic_baseline_arrow_forward_24"
+            android:src="@drawable/ic_arrow"
+            android:rotation="180"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -2,61 +2,71 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/burger_marginLeft"
+        android:layout_marginTop="@dimen/burger_marginTop"
         android:orientation="vertical"
-        android:layout_marginHorizontal="45dp"
-        android:layout_marginTop="60dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
+        <ImageView
+            android:id="@+id/iv_cross"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_cross" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Transaction Categories"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="21dp"
             android:fontFamily="@font/segoeuib"
-            android:textSize="25sp"
+            android:text="Categories"
             android:textColor="@color/headline_text_color"
-            android:layout_marginBottom="30dp"
-            />
+            android:textSize="25sp" />
 
-        <EditText
-            android:id="@+id/etName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textAutoComplete"
-            android:textColor="@color/primary_text_color"
-            android:hint="Account Name"
-            android:layout_marginTop="8dp"
-            android:theme="@style/EditTextTheme"
-            />
 
-        <Spinner
-            android:id="@+id/sType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Spinner.Underlined"
-            android:theme="@style/SpinnerTheme"
-            />
-
-        <Button
-            android:id="@+id/btnFinish"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="25dp"
-            android:paddingVertical="10dp"
-            android:background="@drawable/button_dark"
-            android:fontFamily="@font/segoeuib"
-            android:text="Add new category"
-            android:textColor="@color/white"
-            android:textAllCaps="false"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="40dp"/>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:background="@color/grey_background_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_category_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="25dp"
+            android:layout_gravity="center"
+            />
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"
+        android:padding="20dp"
+        android:backgroundTint="@color/tab_bar_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_white_plus" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

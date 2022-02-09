@@ -9,4 +9,8 @@
         android:id="@+id/historyFragment"
         android:icon="@drawable/ic_baseline_history_24"
         android:title="HISTORY" />
+    <item
+        android:id="@+id/analysisFragment"
+        android:icon="@drawable/ic_baseline_bar_chart_24"
+        android:title="ANALYSIS" />
 </menu>
