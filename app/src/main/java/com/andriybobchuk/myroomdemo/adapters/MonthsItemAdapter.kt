@@ -29,72 +29,89 @@ import com.andriybobchuk.myroomdemo.dialogs.AccountDesignDialog
 import com.andriybobchuk.myroomdemo.room.TransactionDao
 import com.andriybobchuk.myroomdemo.room.TransactionEntity
 import android.text.format.DateFormat;
+import android.widget.Button
+import androidx.core.content.ContextCompat
 import com.andriybobchuk.myroomdemo.util.MyDateConverter
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-
 open class MonthsItemAdapter(
     private val context: Context,
-    private var list: ArrayList<TransactionEntity>,
-    private var transactionDao: TransactionDao
+    private var list: ArrayList<TransactionEntity>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val listOfMonths = ArrayList<String>()
+    private var onClickListener: OnClickListener? = null
+    var checkedPosition = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        val view = LayoutInflater.from(context).inflate(R.layout.item_month, parent, false)
-
+        val view = LayoutInflater.from(context).inflate(
+            R.layout.item_month,
+            parent,
+            false
+        )
         return MyViewHolder(view)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    @SuppressLint("Range", "CutPasteId", "SetTextI18n", "SimpleDateFormat")
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val model = list[position]
 
-
         if (holder is MyViewHolder) {
 
-            holder.itemView.findViewById<TextView>(R.id.tv_year).text =
-                MyDateConverter(model.date).year
-            holder.itemView.findViewById<TextView>(R.id.tv_month).text =
-                MyDateConverter(model.date).monthString
+            // Bind items
+            val tvYear = holder.itemView.findViewById<TextView>(R.id.tv_year)
+            val tvMonth = holder.itemView.findViewById<TextView>(R.id.tv_month)
+
+            // Setup items
+            tvYear.text = MyDateConverter(model.date).year
+            tvMonth.text = MyDateConverter(model.date).monthString
+
+            // Set selection
+            if (checkedPosition == -1) {
+                // Switch it off
+                tvMonth.setBackgroundColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.grey_background_color
+                    )
+                )
+                tvMonth.setTextColor(ContextCompat.getColor(context, R.color.black))
+            } else {
+                if (checkedPosition == position) {
+                    // Switch on
+                    tvMonth.setBackgroundColor(ContextCompat.getColor(context, R.color.black))
+                    tvMonth.setTextColor(ContextCompat.getColor(context, R.color.white))
+                } else {
+                    // Switch off
+                    tvMonth.setBackgroundColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.grey_background_color
+                        )
+                    )
+                    tvMonth.setTextColor(ContextCompat.getColor(context, R.color.black))
+                }
+            }
 
 
-//        if (!listOfMonths.contains(MyDateConverter(model.date).monthString)) {
-//            listOfMonths.add(MyDateConverter(model.date).monthString)
-//
-//            if (holder is MyViewHolder) {
-//
-//
-//                holder.itemView.findViewById<TextView>(R.id.tv_year).text =
-//                    MyDateConverter(model.date).year
-//                holder.itemView.findViewById<TextView>(R.id.tv_month).text =
-//                    MyDateConverter(model.date).monthString
-//
-//            } else {
-//
-//
-//            }
+            holder.itemView.setOnClickListener {
+                if (onClickListener != null) {
 
+                    // Change selection
+                    if (checkedPosition != position) {
+                        // Update the two items we swap selection between
+                        notifyDataSetChanged()
+                        // Now this item is selected
+                        checkedPosition = position
 
-//            holder.itemView.findViewById<TextView>(R.id.tv_account_type).text = model.type
-//            holder.itemView.findViewById<TextView>(R.id.tv_account_name).text = "${model.name}*"
-//
-//            holder.itemView.findViewById<CardView>(R.id.cv_add_account).setOnClickListener {
-//                context.startActivity(Intent(context, CreateAccountActivity::class.java))
-//                // Inflate the dialog
-//                //AccountDesignDialog(context, accountDao).show()
-//            }
-//
-//            holder.itemView.findViewById<CardView>(R.id.cv_account_item).setOnClickListener {
-//
-//                context.startActivity(Intent(context, UpdateAccountActivity::class.java)
-//                    .putExtra("id", model.id))
-//            }
+                    }
+
+                    // Change report data
+                    onClickListener!!.onClick(position, model) // model = list[position]
+                }
+            }
         }
     }
 
@@ -105,18 +122,13 @@ open class MonthsItemAdapter(
         return list.size
     }
 
-    /**
-     * A function to get density pixel from pixel
-     */
-    private fun Int.toDp(): Int =
-        (this / Resources.getSystem().displayMetrics.density).toInt()
+    fun setOnClickListener(onClickListener: OnClickListener) {
+        this.onClickListener = onClickListener // Basic setter function
+    }
 
-    /**
-     * A function to get pixel from density pixel
-     */
-    private fun Int.toPx(): Int =
-        (this * Resources.getSystem().displayMetrics.density).toInt()
-
+    interface OnClickListener {
+        fun onClick(position: Int, model: TransactionEntity)
+    }
 
     /**
      * A ViewHolder describes an item view and metadata about its place within the RecyclerView.

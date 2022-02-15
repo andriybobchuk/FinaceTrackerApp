@@ -1,21 +1,24 @@
 package com.andriybobchuk.myroomdemo.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.andriybobchuk.myroomdemo.activities.MainActivity
+import com.andriybobchuk.myroomdemo.adapters.ExpenseItemAdapter
 import com.andriybobchuk.myroomdemo.adapters.MonthsItemAdapter
 import com.andriybobchuk.myroomdemo.databinding.FragmentAnalysisBinding
+import com.andriybobchuk.myroomdemo.room.CategoryEntity
 import com.andriybobchuk.myroomdemo.room.TransactionEntity
+import com.andriybobchuk.myroomdemo.util.Constants
 import com.andriybobchuk.myroomdemo.util.MyDateConverter
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.lang.Exception
+import kotlinx.coroutines.runBlocking
 import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
@@ -47,6 +50,7 @@ class AnalysisFragment : Fragment() {
         }
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,40 +63,57 @@ class AnalysisFragment : Fragment() {
             MainActivity().setupActionBar()
         }
 
-        setupRecyclerView()
+
+
+
+        setupDateRecycler()
+        //setupExpenseRecycler("Apr2022")
+        //setupIncomeRecycler()
+
+
+
+
+
+
+
+
+
+
+
+
 
         return view
     }
 
-    private fun setupRecyclerView() {
 
-        var transactionList: ArrayList<TransactionEntity>? // Initial list we get
-        var setOfStringMonths = mutableSetOf<String>() // Helper set to filter all copies out
-        var listOfMonths = mutableListOf<TransactionEntity>() // Thingy we'll pass to recycler
+    fun prepareDateData() {
 
-        lifecycleScope.launch {
-            MainFragment.mTransactionDao.fetchAllTransactions().collect { itr ->
-                transactionList = ArrayList(itr)
+        var transactionList: ArrayList<TransactionEntity> // What we get from the DB
+        var dateList = mutableListOf<TransactionEntity>() // Needed to populate the recycler
 
-                for (element in transactionList!!) {
-                    if (!setOfStringMonths.contains(MyDateConverter(element.date).monthString)) {
-                        setOfStringMonths.add(MyDateConverter(element.date).monthString)
-                        listOfMonths.add(element)
+        // dateSet is needed for:
+        // a) Finding all the unique months using set properties
+        // b) Later on whe we filter out analysis data by unique month stamps
+        val dateSet = mutableSetOf<String>()
+
+        runBlocking {
+            MainFragment.mTransactionDao.fetchAllTransactions().collect { list ->
+                transactionList = ArrayList(list) // cast List to ArrayList type
+
+                // Take all TransactionEntities and make a list of date strings out of it
+                var currentDate: String
+                transactionList.forEach { transactionEntity ->
+
+                    currentDate = MyDateConverter(transactionEntity.date).monthString +
+                            MyDateConverter(transactionEntity.date).year
+
+                    if (!dateSet.contains(currentDate)) {
+                        dateSet.add(currentDate)
+                        dateList.add(transactionEntity)
                     }
                 }
+                dateList.sortByDescending { MyDateConverter(it.date).date }
 
-                binding.rvMonthsList.layoutManager = LinearLayoutManager(
-                    requireContext(),
-                    LinearLayoutManager.HORIZONTAL, false
-                )
-                binding.rvMonthsList.setHasFixedSize(true)
-
-                if(transactionList != null) {
-                    val adapter = MonthsItemAdapter(requireContext(),
-                        listOfMonths as ArrayList<TransactionEntity>,
-                        MainFragment.mTransactionDao)
-                    binding.rvMonthsList.adapter = adapter // Attach the adapter to the recyclerView.
-                }
 
             }
         }
@@ -100,6 +121,214 @@ class AnalysisFragment : Fragment() {
 
 
 
+    private fun setupDateRecycler() {
+
+        var transactionList: ArrayList<TransactionEntity>? // Initial list we get
+        val setOfStringMonths = mutableSetOf<String>() // Helper set to filter all copies out
+        val listOfMonths = mutableListOf<TransactionEntity>() // Thingy we'll pass to recycler
+
+        lifecycleScope.launch {
+            MainFragment.mTransactionDao.fetchAllTransactions().collect { itr ->
+                transactionList = ArrayList(itr)
+
+                for (element in transactionList!!) {
+                    if (!setOfStringMonths.contains(
+                            MyDateConverter(element.date).monthString +
+                                    MyDateConverter(element.date).year
+                        )
+                    ) {
+                        setOfStringMonths.add(
+                            MyDateConverter(element.date).monthString +
+                                    MyDateConverter(element.date).year
+                        )
+                        listOfMonths.add(element)
+                    }
+                }
+                listOfMonths.sortByDescending { MyDateConverter(it.date).date }
+
+                binding.rvMonthsList.layoutManager = LinearLayoutManager(
+                    requireContext(),
+                    LinearLayoutManager.HORIZONTAL, true
+                )
+                binding.rvMonthsList.setHasFixedSize(true)
+
+
+
+                if (transactionList != null) {
+                    val adapter = MonthsItemAdapter(
+                        requireContext(),
+                        listOfMonths as ArrayList<TransactionEntity>
+                    )
+                    binding.rvMonthsList.adapter =
+                        adapter // Attach the adapter to the recyclerView.
+
+
+                    ////////////////////END OF DATE RECYCLER RESPONSIBILITIES///////////////////////////////////////
+
+
+                    adapter.setOnClickListener(object : MonthsItemAdapter.OnClickListener {
+                        override fun onClick(position: Int, model: TransactionEntity) {
+
+                            val requestedMonth = MyDateConverter(model.date).monthString +
+                                    MyDateConverter(model.date).year
+
+                            setupExpenseRecycler(requestedMonth)
+                        }
+                    })
+
+
+                    // Setup other recyclers for the default month
+                    // (0-th element in the date recycler)
+                    val mostRecentMonth =
+                        MyDateConverter(listOfMonths[0].date).monthString + MyDateConverter(
+                            listOfMonths[0].date
+                        ).year
+
+                    setupExpenseRecycler(mostRecentMonth)
+                }
+
+            }
+        }
+
+
+    }
+
+    private fun setupExpenseRecycler(requiredMonth: String) {
+        var transactionList: ArrayList<TransactionEntity>? // Initial list we get
+        val setOfCategories = mutableSetOf<String>() // Helper set to filter all copies out
+        val mapCategoryToSum = mutableMapOf<String, String>()
+        var categoryList: ArrayList<CategoryEntity>?
+
+        lifecycleScope.launch {
+            MainFragment.mTransactionDao.fetchAllTransactions().collect { itr ->
+                transactionList = ArrayList(itr)
+
+
+                // Filtering stage to get data only for the needed required month
+                transactionList!!.forEach {
+                    val currentMonth = MyDateConverter(it.date).monthString +
+                            MyDateConverter(it.date).year
+                    if (currentMonth == requiredMonth) {
+                        if (!setOfCategories.contains(it.category)) {
+                            setOfCategories.add(it.category)
+                        }
+                    }
+                }
+
+                // Filtering out only expenses +
+                // Summing stage to output the total amount of money in each category
+                setOfCategories.forEach { category ->
+                    MainFragment.mCategoryDao.fetchCategoryByName(category).collect {
+                        if(it.name == category) {
+                            if(it.type == Constants.EXPENSE) {
+                                var sumInCategory: Double = 0.00
+                                var currencyOfTheCategory: String = ""
+                                transactionList!!.forEach {
+
+                                    val currentMonth = MyDateConverter(it.date).monthString +
+                                            MyDateConverter(it.date).year
+
+                                    if (currentMonth == requiredMonth) {
+                                        if (it.category == category) { sumInCategory += it.amount.toDouble() }
+                                        currencyOfTheCategory = it.currency
+                                    }
+                                }
+
+                                // We will pass a map of category - sum to the recycler adapter
+                                mapCategoryToSum += Pair(
+                                    category,
+                                    currencyOfTheCategory + " " + "%.2f".format(sumInCategory)
+                                )
+                            }
+                        }
+                    }
+                }
+
+                binding.rvExpenseList.layoutManager = LinearLayoutManager(
+                    requireContext(),
+                    LinearLayoutManager.VERTICAL, false
+                )
+                binding.rvExpenseList.setHasFixedSize(true)
+
+                if (transactionList != null) {
+                    val adapter = ExpenseItemAdapter(
+                        requireContext(),
+                        mapCategoryToSum
+                    )
+                    binding.rvExpenseList.adapter =
+                        adapter // Attach the adapter to the recyclerView.
+                }
+
+            }
+        }
+    }
+
+
+    private fun setupExpenseByAccountRecycler(requiredMonth: String) {
+        var transactionList: ArrayList<TransactionEntity>? // Initial list we get
+        val setOfCategories = mutableSetOf<String>() // Helper set to filter all copies out
+        val mapCategoryToSum = mutableMapOf<String, String>()
+
+        lifecycleScope.launch {
+            MainFragment.mTransactionDao.fetchAllTransactions().collect { itr ->
+                transactionList = ArrayList(itr)
+
+
+                // Filtering stage to get data only for the needed required month
+                transactionList!!.forEach {
+                    val currentMonth = MyDateConverter(it.date).monthString +
+                            MyDateConverter(it.date).year
+                    if (currentMonth == requiredMonth) {
+                        if (!setOfCategories.contains(it.category)) {
+                            setOfCategories.add(it.category)
+                        }
+                    }
+                }
+
+                // Summing stage to output the total amount of money in each category
+                setOfCategories.forEach { category ->
+                    var sumInCategory: Double = 0.00
+                    var currencyOfTheCategory: String = ""
+                    transactionList!!.forEach {
+
+                        val currentMonth = MyDateConverter(it.date).monthString +
+                                MyDateConverter(it.date).year
+
+                        if (currentMonth == requiredMonth) {
+                            if (it.category == category) { sumInCategory += it.amount.toDouble() }
+                            currencyOfTheCategory = it.currency
+                        }
+                    }
+
+                    // We will pass a map of category - sum to the recycler adapter
+                    mapCategoryToSum += Pair(
+                        category,
+                        currencyOfTheCategory + " " + "%.2f".format(sumInCategory)
+                    )
+                }
+
+                binding.rvExpenseList.layoutManager = LinearLayoutManager(
+                    requireContext(),
+                    LinearLayoutManager.VERTICAL, false
+                )
+                binding.rvExpenseList.setHasFixedSize(true)
+
+                if (transactionList != null) {
+                    val adapter = ExpenseItemAdapter(
+                        requireContext(),
+                        mapCategoryToSum
+                    )
+                    binding.rvExpenseList.adapter =
+                        adapter // Attach the adapter to the recyclerView.
+                }
+
+            }
+        }
+    }
+
+    private fun setupIncomeRecycler() {
+        //TODO("Not yet implemented")
+    }
 
 
     companion object {

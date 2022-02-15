@@ -20,8 +20,8 @@
 
         <ImageView
             android:id="@+id/iv_burger"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginLeft="@dimen/burger_marginLeft"
             android:layout_marginTop="@dimen/burger_marginTop"
             android:src="@drawable/ic_drawer_menu_button" />
@@ -40,7 +40,7 @@
                 android:fontFamily="@font/segoeuib"
                 android:text="Accounts"
                 android:textColor="@color/headline_text_color"
-                android:textSize="30sp"
+                android:textSize="28sp"
                 />
         </LinearLayout>
 

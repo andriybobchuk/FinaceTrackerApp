@@ -7,9 +7,10 @@ import java.util.*
 class MyDateConverter(dateString: String) {
 
     val FORMAT_FROM = SimpleDateFormat("d MMM yyyy")
-    val date: Date = FORMAT_FROM.parse(dateString)
 
     // Obtained values:
+    val date: Date = FORMAT_FROM.parse(dateString)
+
     val dayOfTheWeek = DateFormat.format("EEEE", date) as String // Thursday
     val day = DateFormat.format("dd", date) as String // 20
     val monthString = DateFormat.format("MMM", date) as String // Jun

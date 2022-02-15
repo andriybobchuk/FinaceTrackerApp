@@ -6,9 +6,13 @@
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/drawable/bottom_navigation_selector.xml" value="0.290625" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/drawable/button_dark.xml" value="0.290625" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/drawable/button_light.xml" value="0.290625" />
+        <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/drawable/button_selectable_date.xml" value="0.2833333333333333" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/drawable/circle_drawable.xml" value="0.28615384615384615" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/drawable/circular_view.xml" value="0.290625" />
+        <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/drawable/date_card_light.xml" value="0.290625" />
+        <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/drawable/dotted.xml" value="0.290625" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/drawable/drawer_background.xml" value="0.28615384615384615" />
+        <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/drawable/ic_baseline_circle_24.xml" value="0.290625" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/drawable/ic_vector_done_24dp.xml" value="0.290625" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/drawable/selectable_item_background.xml" value="0.290625" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/drawable/side_nav_bar.xml" value="0.14074074074074075" />
@@ -29,7 +33,7 @@
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/drawer_header.xml" value="0.264" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/drawer_menu.xml" value="0.27447916666666666" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/fragment_analysis.xml" value="0.264" />
-        <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/fragment_history.xml" value="0.8800000000000001" />
+        <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/fragment_history.xml" value="0.4" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/fragment_main.xml" value="0.264" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/item_account.xml" value="0.72" />
         <entry key="..\:/Documents/Android/Sources/InNOutsRoomDemo/app/src/main/res/layout/item_analysis_category.xml" value="0.264" />
