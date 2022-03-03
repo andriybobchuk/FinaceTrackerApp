@@ -35,8 +35,6 @@ class CreateAccountActivity : AppCompatActivity() {
 
         binding?.btnAdd?.setOnClickListener {
             createAccount()
-            MainFragment.mAccountsArrayAdapter.clear()
-            finish()
         }
 
         val currenciesSpinner = binding?.sCurrency
@@ -88,14 +86,15 @@ class CreateAccountActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 MainFragment.mAccountDao.insert(account)
             }
+            MainFragment.mAccountsArrayAdapter.clear()
+            finish()
+            // Clearing the text fields
+            binding?.etName?.text?.clear()
+            binding?.etBalance?.text?.clear()
 
         } else {
             Toast.makeText(applicationContext, "Fill all of the fields!", Toast.LENGTH_LONG).show()
         }
-
-        // Clearing the text fields
-        binding?.etName?.text?.clear()
-        binding?.etBalance?.text?.clear()
     }
 
 
@@ -109,8 +108,16 @@ class CreateAccountActivity : AppCompatActivity() {
         colorsList.add("#B2CFEA")
         colorsList.add("#C9B1E2")
         colorsList.add("#B1E2B3")
+
         colorsList.add("#E2B1D2")
         colorsList.add("#E2B1B1")
+        colorsList.add("#B1E2E2")
+        colorsList.add("#D2E2B1")
+
+        colorsList.add("#B3B1E2")
+        colorsList.add("#B1E2D0")
+        colorsList.add("#E2DDB1")
+        colorsList.add("#E2C5B1")
 
         return colorsList
     }
@@ -127,7 +134,7 @@ class CreateAccountActivity : AppCompatActivity() {
             val listDialog = object: ColorListDialog(
                 this@CreateAccountActivity,
                 colorsList,
-                "Select the color",
+                "Color Select",
                 mSelectedColor
             ) {
                 override fun onItemSelected(color: String) {

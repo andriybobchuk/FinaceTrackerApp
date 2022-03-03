@@ -1,26 +1,32 @@
 package com.andriybobchuk.myroomdemo.activities
 
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.toColor
 import androidx.lifecycle.lifecycleScope
-import com.andriybobchuk.myroomdemo.R
 import com.andriybobchuk.myroomdemo.databinding.ActivityUpdateAccountBinding
 import com.andriybobchuk.myroomdemo.dialogs.ColorListDialog
 import com.andriybobchuk.myroomdemo.fragments.MainFragment
 import com.andriybobchuk.myroomdemo.room.AccountEntity
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.lang.Exception
-import java.util.ArrayList
+import java.util.*
+
 
 class UpdateAccountActivity : AppCompatActivity() {
     private var binding: ActivityUpdateAccountBinding? = null
     private var mSelectedColor: String = "#e2c8b1" // standard color
+    private var mCurrency: String = ""
+    private var mAccountType: String = ""
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Binding way of inflating the root
@@ -42,26 +48,6 @@ class UpdateAccountActivity : AppCompatActivity() {
             deleteAccount()
             finish()
         }
-
-        val currenciesSpinner = binding?.sCurrency
-        ArrayAdapter.createFromResource(
-            applicationContext,
-            R.array.currencies_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            currenciesSpinner?.adapter = adapter
-        }
-
-        val accountTypesSpinner = binding?.sType
-        ArrayAdapter.createFromResource(
-            applicationContext,
-            R.array.account_types_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            accountTypesSpinner?.adapter = adapter
-        }
     }
 
 
@@ -72,37 +58,33 @@ class UpdateAccountActivity : AppCompatActivity() {
             MainFragment.mAccountDao.fetchAccountById(
                 intent.getIntExtra("id", 0)
             ).collect {
-                if(it != null) {
-                    binding?.etName?.setText(it.name)
-//                binding?.sCurrency?.selectedItem
-//                binding?.sType?.selectedItem
-                    binding?.etBalance?.setText(it.balance)
-                    binding?.vColor?.setBackgroundColor(Color.parseColor(it.color.toString()))
-                }
+                binding?.etName?.setText(it.name)
+                mAccountType = it.type
+                mCurrency = it.currency
+                binding?.etBalance?.setText(it.balance)
+
+                mSelectedColor = it.color
+                binding?.vColor?.setBackgroundColor(Color.parseColor(mSelectedColor))
             }
         }
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun updateAccount() {
 
         val name = binding?.etName?.text.toString()
-        val currency = binding?.sCurrency?.selectedItem.toString()
-        val type = binding?.sType?.selectedItem.toString()
         val balance = binding?.etBalance?.text.toString()
-        //TODO: Fix bug with color
-        // val color = binding?.vColor?.background.getColor()
+
         if (
             name.isNotEmpty() &&
-            currency.isNotEmpty() &&
-            type.isNotEmpty() &&
             balance.isNotEmpty()
         ) {
             var account = AccountEntity(
                 id = intent.getIntExtra("id", 0),
                 name = name,
-                currency = currency,
-                type = type,
+                type = mAccountType,
+                currency = mCurrency,
                 balance = balance,
                 color = mSelectedColor // TODO
             )
@@ -135,8 +117,16 @@ class UpdateAccountActivity : AppCompatActivity() {
         colorsList.add("#B2CFEA")
         colorsList.add("#C9B1E2")
         colorsList.add("#B1E2B3")
+
         colorsList.add("#E2B1D2")
         colorsList.add("#E2B1B1")
+        colorsList.add("#B1E2E2")
+        colorsList.add("#D2E2B1")
+
+        colorsList.add("#B3B1E2")
+        colorsList.add("#B1E2D0")
+        colorsList.add("#E2DDB1")
+        colorsList.add("#E2C5B1")
 
         return colorsList
     }
@@ -153,7 +143,7 @@ class UpdateAccountActivity : AppCompatActivity() {
             val listDialog = object : ColorListDialog(
                 this@UpdateAccountActivity,
                 colorsList,
-                "Select the color",
+                "Color Select",
                 mSelectedColor
             ) {
                 override fun onItemSelected(color: String) {

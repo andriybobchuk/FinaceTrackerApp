@@ -2,11 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/drawer_home"
-            android:icon="@drawable/ic_baseline_home_24"
-            android:title="Home" />
-
-        <item
             android:id="@+id/drawer_category"
             android:icon="@drawable/ic_baseline_local_grocery_store_24"
             android:title="Categories" />
@@ -15,5 +10,10 @@
             android:id="@+id/drawer_recurring"
             android:icon="@drawable/ic_baseline_loop_24"
             android:title="Recurring Payments" />
+
+        <item
+            android:id="@+id/drawer_about"
+            android:icon="@drawable/ic_baseline_info_24"
+            android:title="About" />
     </group>
 </menu>

@@ -73,8 +73,8 @@
 
         <ImageView
             android:id="@+id/iv_no_transactions_available"
-            android:layout_width="95dp"
-            android:layout_height="95dp"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:src="@drawable/ic_groceries" />
@@ -99,9 +99,10 @@
             android:fontFamily="@font/segoeui"
             android:gravity="center"
             android:paddingTop="15dp"
-            android:text="Go back to Ins'n'Outs tab and add your first transaction"
+            android:paddingBottom="15dp"
+            android:text="Go back to Ins'n'Outs tab and add your first transaction!"
             android:textColor="@color/tab_bar_color"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
     </LinearLayout>
 
 

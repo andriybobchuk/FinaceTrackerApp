@@ -23,12 +23,12 @@ interface CategoryDao {
     @Delete
     suspend fun delete(categoryEntity: CategoryEntity)
 
-    @Query("SELECT * FROM `category-table`")
+    @Query("SELECT * FROM `category`")
     fun fetchAllCategories():Flow<List<CategoryEntity>>
 
-    @Query("SELECT * FROM `category-table` WHERE id=:id")
+    @Query("SELECT * FROM `category` WHERE id=:id")
     fun fetchCategoryById(id: Int):Flow<CategoryEntity>
 
-    @Query("SELECT * FROM `category-table` WHERE name=:name")
+    @Query("SELECT * FROM `category` WHERE name=:name")
     fun fetchCategoryByName(name: String):Flow<CategoryEntity>
 }

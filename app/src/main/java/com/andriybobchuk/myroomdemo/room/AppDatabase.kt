@@ -16,7 +16,7 @@ import androidx.room.RoomDatabase
     AccountEntity::class,
     TransactionEntity::class,
     CategoryEntity::class
-                     ], version = 17)
+                     ], version = 20)
 abstract class AppDatabase:RoomDatabase() {
 
     abstract fun accountDao(): AccountDao
@@ -49,8 +49,9 @@ abstract class AppDatabase:RoomDatabase() {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         AppDatabase::class.java,
-                        "employee_database")
-                        .fallbackToDestructiveMigration()
+                        "database")
+                        //.fallbackToDestructiveMigration()
+                        .createFromAsset("database/database.db")
                         .build()
 
                     INSTANCE = instance

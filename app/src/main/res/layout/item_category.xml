@@ -27,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:gravity="center"
             android:layout_gravity="center">
 
             <ImageView
@@ -44,10 +45,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:text="Groceries"
                 android:fontFamily="@font/segoeuib"
                 android:textColor="@color/primary_text_color"
-                android:textSize="17sp"
+                android:textSize="16.5sp"
                 android:paddingHorizontal="20dp"
                 android:paddingTop="10dp"
                 />

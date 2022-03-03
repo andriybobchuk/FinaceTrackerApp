@@ -2,9 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/grey_background_color"
     tools:context=".fragments.AnalysisFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -54,28 +55,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:paddingBottom="20dp"
-        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_appBar">
+        app:layout_constraintTop_toBottomOf="@id/rv_appBar"
+        android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_months_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="25dp" />
+
     </LinearLayout>
 
+    <View
+        android:id="@+id/stroke"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/spinner_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout" />
+
     <ScrollView
+        android:id="@+id/sv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/stroke">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:background="@color/grey_background_color"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -122,6 +135,17 @@
                         android:textColor="@color/accent_color"
                         android:textSize="14dp" />
 
+                    <TextView
+                        android:id="@+id/tv_expenses_by_category_no_data"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/segoeui"
+                        android:text="No Data"
+                        android:textColor="@color/tab_bar_color"
+                        android:textSize="14dp" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_expense_list"
                         android:layout_width="match_parent"
@@ -139,7 +163,18 @@
                         android:fontFamily="@font/segoeuisb"
                         android:text="By accounts"
                         android:textColor="@color/accent_color"
-                        android:textSize="13dp" />
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/tv_expenses_by_account_no_data"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/segoeui"
+                        android:text="No Data"
+                        android:textColor="@color/tab_bar_color"
+                        android:textSize="14dp"
+                        android:layout_marginBottom="25dp"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_expense_account_list"
@@ -191,6 +226,17 @@
                         android:textColor="@color/accent_color"
                         android:textSize="14dp" />
 
+                    <TextView
+                        android:id="@+id/tv_income_by_category_no_data"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/segoeui"
+                        android:text="No Data"
+                        android:textColor="@color/tab_bar_color"
+                        android:textSize="14dp" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_income_list"
                         android:layout_width="match_parent"
@@ -208,7 +254,18 @@
                         android:fontFamily="@font/segoeuisb"
                         android:text="By accounts"
                         android:textColor="@color/accent_color"
-                        android:textSize="13dp" />
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/tv_income_by_account_no_data"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/segoeui"
+                        android:text="No Data"
+                        android:textColor="@color/tab_bar_color"
+                        android:textSize="14dp"
+                        android:layout_marginBottom="25dp"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_income_account_list"
@@ -220,7 +277,40 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cv_generate_pdf"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:strokeColor="@color/card_stroke_color"
+                app:strokeWidth="0.25dp"
+                android:layout_marginHorizontal="16dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                android:layout_marginTop="19dp"
+                android:layout_marginBottom="15dp"
+                android:background="@color/grey_background_color"
+                >
 
+                <TextView
+                    android:id="@+id/tv_add_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:background="@color/grey_background_color"
+                    android:text="Generate a PDF"
+                    android:paddingVertical="15dp"
+                    android:fontFamily="@font/segoeui"
+                    android:textColor="@color/tab_bar_color"
+                    android:textSize="14sp"
+                    style="@style/SelectableItemBackground"
+                    />
+
+<!--                <View-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    style="@style/SelectableItemBackground"/>-->
+
+            </com.google.android.material.card.MaterialCardView>
 
 
 

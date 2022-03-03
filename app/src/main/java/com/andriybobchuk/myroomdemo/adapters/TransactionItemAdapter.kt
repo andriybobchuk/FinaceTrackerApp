@@ -46,7 +46,11 @@ class TransactionItemAdapter(
         // Let's bind individual items of each view
         holder.tvTransactionItemRowCategory.text = item.category
         holder.tvTransactionItemRowDate.text = item.date
-        holder.tvTransactionItemRowDescription.text = item.description
+        if(item.description.trim() == "") {
+            holder.tvTransactionItemRowDescription.text = ""
+        } else {
+            holder.tvTransactionItemRowDescription.text = "\"${item.description}\""
+        }
 
         for (category in categories) {
 

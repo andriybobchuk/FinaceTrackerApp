@@ -34,7 +34,7 @@ class ColorListItemsAdapter(
 
         if (holder is MyViewHolder) {
 
-            holder.itemView.findViewById<View>(R.id.view_main).setBackgroundColor(Color.parseColor(item))
+            holder.itemView.findViewById<View>(R.id.view_main).background.setTint(Color.parseColor(item))
 
             if (item == mSelectedColor) {
                 holder.itemView.findViewById<ImageView>(R.id.iv_selected_color).visibility = View.VISIBLE

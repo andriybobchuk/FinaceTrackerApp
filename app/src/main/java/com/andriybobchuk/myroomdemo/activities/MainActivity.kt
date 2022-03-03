@@ -1,6 +1,7 @@
 package com.andriybobchuk.myroomdemo.activities
 
 
+import android.Manifest
 import android.app.PendingIntent.getActivity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.andriybobchuk.myroomdemo.R
 import com.andriybobchuk.myroomdemo.databinding.ContentMainBinding
 import com.andriybobchuk.myroomdemo.databinding.DrawerHeaderBinding
+import com.andriybobchuk.myroomdemo.fragments.MainFragment
 import com.andriybobchuk.myroomdemo.room.AccountDao
 import com.andriybobchuk.myroomdemo.room.CategoryDao
 import com.andriybobchuk.myroomdemo.util.FinanceApp
@@ -32,9 +34,15 @@ import com.google.android.material.shape.MaterialShapeDrawable
 
 
 import com.google.android.material.navigation.NavigationView
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.single.PermissionListener
 
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), MainFragment.OnClickListener {
 
     // View Binding
     private var binding: ContentMainBinding? = null
@@ -63,18 +71,21 @@ class MainActivity : BaseActivity() {
             .build()
 
 
+
+
+
         // Drawer
         mainBinding?.navView?.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.drawer_home -> {
-                    // handle click
-                    true
-                }
                 R.id.drawer_category -> {
                     startActivity(Intent(applicationContext, CategoryActivity::class.java))
                     true
                 }
                 R.id.drawer_recurring -> {
+                    // handle click
+                    true
+                }
+                R.id.drawer_about -> {
                     // handle click
                     true
                 }
@@ -85,19 +96,23 @@ class MainActivity : BaseActivity() {
         }
 
 
-        setupActionBar()
+        MainFragment().setOnClickListener(this)
+
+        //setupActionBar()
     }
 
 
-
     fun setupActionBar() {
-        // findViewById<ImageView>(R.id.iv_burger).setOnClickListener {
-            if (findViewById<DrawerLayout>(R.id.drawer_layout).isDrawerOpen(GravityCompat.START)) {
-                findViewById<DrawerLayout>(R.id.drawer_layout).closeDrawer(GravityCompat.START)
-            } else {
-                findViewById<DrawerLayout>(R.id.drawer_layout).openDrawer(GravityCompat.START)
-            }
-        // }
+        if (findViewById<DrawerLayout>(R.id.drawer_layout).isDrawerOpen(GravityCompat.START)) {
+            findViewById<DrawerLayout>(R.id.drawer_layout).closeDrawer(GravityCompat.START)
+        } else {
+            findViewById<DrawerLayout>(R.id.drawer_layout).openDrawer(GravityCompat.START)
+        }
+    }
+
+    override fun onClick() {
+
+        setupActionBar()
     }
 
 

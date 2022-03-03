@@ -101,8 +101,7 @@ class HistoryFragment : Fragment() {
         if (transactionList.size > 0) {
 
             binding.rvTransactionsList.visibility = View.VISIBLE
-            binding.tvNoTransactionsAvailable.visibility = View.GONE
-            binding.ivNoTransactionsAvailable.visibility = View.GONE
+            binding.llNoTransactions.visibility = View.GONE
 
             binding.rvTransactionsList.layoutManager = LinearLayoutManager(requireContext())
             binding.rvTransactionsList.setHasFixedSize(true)
@@ -113,8 +112,7 @@ class HistoryFragment : Fragment() {
 
         } else {
             binding.rvTransactionsList.visibility = View.GONE
-            binding.tvNoTransactionsAvailable.visibility = View.VISIBLE
-            binding.ivNoTransactionsAvailable.visibility = View.VISIBLE
+            binding.llNoTransactions.visibility = View.VISIBLE
         }
     }
 

@@ -17,46 +17,22 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Update a category"
+            android:text="Delete this category?"
             android:fontFamily="@font/segoeuib"
             android:textSize="25sp"
             android:textColor="@color/headline_text_color"
             android:layout_marginBottom="30dp"
             />
 
-        <EditText
-            android:id="@+id/etName"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textAutoComplete"
-            android:textColor="@color/primary_text_color"
-            android:hint="Category Name"
-            android:layout_marginTop="8dp"
-            android:theme="@style/EditTextTheme"
+            android:text="In order to avoid breaking the database's logic, the only action you can perform on existing categories is deleting. "
+            android:fontFamily="@font/segoeui"
+            android:textSize="15sp"
+            android:textColor="@color/headline_text_color"
+            android:layout_marginBottom="30dp"
             />
-
-        <Spinner
-            android:id="@+id/sType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Spinner.Underlined"
-            android:theme="@style/SpinnerTheme"
-            />
-
-        <Button
-            android:id="@+id/btnUpdate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="25dp"
-            android:paddingVertical="10dp"
-            android:background="@drawable/button_dark"
-            android:fontFamily="@font/segoeuib"
-            android:text="Update"
-            android:textColor="@color/white"
-            android:textAllCaps="false"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="40dp"/>
-
 
         <Button
             android:id="@+id/btnDelete"
@@ -64,10 +40,10 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="25dp"
             android:paddingVertical="10dp"
-            android:background="@drawable/button_light"
+            android:background="@drawable/button_dark"
             android:fontFamily="@font/segoeuib"
             android:text="Delete"
-            android:textColor="@color/primary_text_color"
+            android:textColor="@color/white"
             android:textAllCaps="false"
             android:layout_marginBottom="55dp"
             android:layout_marginTop="10dp"/>

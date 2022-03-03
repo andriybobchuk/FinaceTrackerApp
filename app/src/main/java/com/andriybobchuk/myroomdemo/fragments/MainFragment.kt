@@ -74,6 +74,14 @@ class MainFragment : Fragment() {
         }
     }
 
+    interface OnClickListener {
+        fun onClick()
+    }
+    private var onClickListener: OnClickListener? = null
+
+    fun setOnClickListener(onClickListener: OnClickListener) {
+        this.onClickListener = onClickListener // Basic setter function
+    }
 
     /**
      * with fragments, the layout is inflated in onCreateView().
@@ -90,9 +98,15 @@ class MainFragment : Fragment() {
 
         setCurrentDate()
 
+
         binding.ivBurger.setOnClickListener {
-            MainActivity().setupActionBar()
+            if (onClickListener == null) return@setOnClickListener
+            onClickListener?.onClick()
+
         }
+//        binding.ivBurger.setOnClickListener {
+//            //MainActivity().setupActionBar()
+//        }
 
         // Accounts list (The big cards at the top)
         var accountDao = (activity?.application!! as FinanceApp).db.accountDao()
@@ -279,6 +293,7 @@ class MainFragment : Fragment() {
                                         date = date,
                                         amount = amount,
                                         category = category,
+                                        categoryType = category_it.type,
                                         account = account,
                                         currency = it.currency,
                                         description = description

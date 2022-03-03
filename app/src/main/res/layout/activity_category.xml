@@ -19,25 +19,35 @@
 
         <ImageView
             android:id="@+id/iv_cross"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:src="@drawable/ic_cross" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:layout_marginBottom="21dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="16dp"
             android:fontFamily="@font/segoeuib"
             android:text="Categories"
             android:textColor="@color/headline_text_color"
-            android:textSize="25sp" />
+            android:textSize="23sp" />
 
 
 
     </LinearLayout>
 
+
+    <View
+        android:id="@+id/stroke"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/spinner_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/linearLayout" />
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"

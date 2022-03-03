@@ -12,6 +12,7 @@ data class TransactionEntity(
     val date: String = "",
     val amount: String = "",
     val category: String = "",
+    val categoryType: String = "",
     val account: String = "",
     val currency: String = "",
     val description: String = ""

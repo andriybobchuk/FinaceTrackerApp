@@ -16,13 +16,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/primary_text_color"
-            android:textSize="14sp"
-            android:textStyle="bold"
+            android:textSize="18sp"
+            android:fontFamily="@font/segoeuib"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="18dp"
             android:visibility="visible"
             tools:text="Select" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvList"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginBottom="24dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"

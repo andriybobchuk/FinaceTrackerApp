@@ -40,7 +40,7 @@
                 android:fontFamily="@font/segoeuib"
                 android:text="Accounts"
                 android:textColor="@color/headline_text_color"
-                android:textSize="28sp"
+                android:textSize="27sp"
                 />
         </LinearLayout>
 
@@ -163,8 +163,9 @@
                 android:paddingVertical="10dp"
                 android:layout_marginRight="6dp"
                 android:text="Add Transaction"
+                android:textSize="13.5dp"
                 android:textAllCaps="false"
-                android:elevation="0dp"
+                android:stateListAnimator="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

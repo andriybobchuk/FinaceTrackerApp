@@ -54,7 +54,7 @@ class CategoryActivity : AppCompatActivity() {
         val adapter = CategoryItemAdapter(categoryList,
             {
                 updateId ->
-                updateCategoryDialog(updateId)
+                deleteCategoryDialog(updateId)
             }
         )
         binding?.rvCategoryList?.adapter = adapter // Attach the adapter to the recyclerView.
@@ -66,7 +66,7 @@ class CategoryActivity : AppCompatActivity() {
         val binding = DialogCreateCategoryBinding.inflate(layoutInflater)
         updateDialog.setContentView(binding.root)
 
-        val accountTypesSpinner = binding?.sType
+        val accountTypesSpinner = binding.sType
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
             this,
@@ -81,7 +81,7 @@ class CategoryActivity : AppCompatActivity() {
 
         binding.btnCreate.setOnClickListener {
 
-            val name = binding?.etName?.text.toString()
+            val name = binding.etName.text.toString()
             val type = binding?.sType?.selectedItem.toString()
             val icon: Int
 
@@ -110,65 +110,11 @@ class CategoryActivity : AppCompatActivity() {
         updateDialog.show()
     }
 
-    private fun updateCategoryDialog(id: Int) {
+    private fun deleteCategoryDialog(id: Int) {
         val updateDialog = Dialog(this, R.style.Theme_Dialog)
         updateDialog.setCancelable(true)
         val binding = DialogUpdateCategoryBinding.inflate(layoutInflater)
         updateDialog.setContentView(binding.root)
-
-        val accountTypesSpinner = binding?.sType
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter.createFromResource(
-            this,
-            R.array.category_types_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            accountTypesSpinner?.adapter = adapter
-        }
-
-        //UPDATE FEATURE
-        lifecycleScope.launch {
-            MainFragment.mCategoryDao.fetchCategoryById(id).collect {
-                binding.etName.setText(it?.name) // HAHA, using this I saved the delete feature!
-                if(it?.type == Constants.EXPENSE) {
-                    binding.sType.setSelection(0)
-                } else {
-                    binding.sType.setSelection(1)
-                }
-            }
-        }
-
-        binding.btnUpdate.setOnClickListener {
-
-            val name = binding?.etName?.text.toString()
-            val type = binding?.sType?.selectedItem.toString()
-            val icon: Int
-
-            if (name.isNotEmpty() && type.isNotEmpty()) {
-
-                icon = if (type == Constants.EXPENSE) {
-                    R.drawable.ic_other_income
-                } else {
-                    R.drawable.ic_other_expense
-                }
-                lifecycleScope.launch {
-                    MainFragment.mCategoryDao.update(CategoryEntity(
-                        id = id,
-                        name = name,
-                        type = type,
-                        icon = icon
-                    ))
-                }
-                updateDialog.dismiss()
-            } else {
-                Toast.makeText(this, "Fill all of the fields!", Toast.LENGTH_LONG).show()
-            }
-            // Clearing the text fields
-            binding?.etName?.text?.clear()
-        }
 
         binding.btnDelete.setOnClickListener {
             lifecycleScope.launch {
@@ -176,8 +122,6 @@ class CategoryActivity : AppCompatActivity() {
             }
             updateDialog.dismiss()
         }
-
-
 
         //Start the dialog and display it on screen.
         updateDialog.show()

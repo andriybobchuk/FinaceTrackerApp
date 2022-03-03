@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingLeft="10dp"
+    android:paddingLeft="9dp"
     >
 
     <TextView
@@ -15,11 +15,11 @@
         android:gravity="center"
         android:background="@color/white"
         android:text="2021"
-        android:fontFamily="@font/segoeuisb"
+        android:fontFamily="@font/segoeui"
         android:textColor="@color/card_add_text_color"
         android:textSize="12sp"
         android:paddingHorizontal="18dp"
-        android:paddingVertical="9dp"
+        android:paddingVertical="8dp"
         />
 
 
@@ -41,12 +41,13 @@
             android:background="@drawable/drawable_selectable_date"
             android:fontFamily="@font/segoeuib"
             android:textColor="@color/primary_text_color"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:paddingHorizontal="18dp"
             android:paddingVertical="9dp"
             />
 
     </androidx.cardview.widget.CardView>
+
 
 </LinearLayout>
 

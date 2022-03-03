@@ -12,6 +12,7 @@
     <color name="primary_text_color">#000000</color>
     <color name="headline_text_color">#080c2b</color>
     <color name="accent_color">#5492dc</color>
+    <color name="ripple_color">#d9dadb</color>
     <color name="tab_bar_color">#161616</color>
     <color name="light_grey">#F5F5F5</color>
     <color name="dark_grey">#cfcfcf</color>
@@ -21,7 +22,7 @@
     <color name="spinner_color">#ededed</color>
     <color name="snackbar_error_color">#D93025</color>
 
-    <color name="income_color">#316552</color>
+    <color name="income_color">#38735d</color>
     <color name="grey_background_color">#F7F7F7</color>
 
 </resources>

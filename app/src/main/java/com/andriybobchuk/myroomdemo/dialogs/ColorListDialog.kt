@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andriybobchuk.myroomdemo.R
@@ -32,8 +33,10 @@ abstract class ColorListDialog(
     }
 
     private fun setUpRecyclerView(view: View) {
+
         view.findViewById<TextView>(R.id.tvTitle).text = title
-        view.findViewById<RecyclerView>(R.id.rvList).layoutManager = LinearLayoutManager(context)
+        view.findViewById<RecyclerView>(R.id.rvList).layoutManager = GridLayoutManager(context, 4)
+
         adapter = ColorListItemsAdapter(context, list, mSelectedColor)
         view.findViewById<RecyclerView>(R.id.rvList).adapter = adapter
 

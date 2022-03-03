@@ -7,12 +7,12 @@
     android:gravity="center"
     android:orientation="horizontal"
     android:paddingRight="40dp"
-    android:paddingVertical="10dp">
+    android:paddingVertical="7dp">
 
     <ImageView
         android:id="@+id/ivTransactionItemRowCategory"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_weight="1.2"
         android:src="@drawable/ic_groceries"/>
 
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
-            android:textSize="16sp"
+            android:textSize="14.5sp"
             tools:text="Groceries"
             android:fontFamily="@font/segoeuib"
             />
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
-            android:textSize="14sp"
+            android:textSize="12.5sp"
             android:text="19 Oct 2021"
             android:fontFamily="@font/segoeui"/>
 
@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
-            android:textSize="14sp"
+            android:textSize="12.5sp"
             android:text="Trip to Kaufland"
             android:layout_marginTop="3dp"
             android:fontFamily="@font/segoeui"/>
