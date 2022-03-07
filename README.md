@@ -12,7 +12,7 @@ A personal budgeting app. It's simple. As you buy a cup of coffee or receive a r
 
 * [ROOM Database](https://developer.android.com/jetpack/androidx/releases/room) - All the CRUD operations
 * Fragments and Navigation
-* Recycler Layout - populated with the data from the database
+* Recycler Layout - How to populate it with the data from the database.
 * Generating files
 * Comparing to my previous app ([Weather](https://github.com/andriybobchuk/Weather)) - much cleaner architecture. I.e. all files are splitted between Activities, Adapters, Dialogs, Fragments, Room, and Util packages to make it understandable for other developers. 
 
